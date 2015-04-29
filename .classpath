@@ -2,16 +2,16 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Ahmet/Desktop/Workspace/KittenMaxit/lib/jars/jinput.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ahmet/Desktop/Workspace/KittenMaxit/lib/jars/jogg-0.0.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ahmet/Desktop/Workspace/KittenMaxit/lib/jars/jorbis-0.0.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ahmet/Desktop/Workspace/KittenMaxit/lib/jars/lwjgl.jar">
+	<classpathentry kind="lib" path="C:/Users/Hilmi/Desktop/WorkSpace/KittenMaxit/lib/jars/jinput.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hilmi/Desktop/WorkSpace/KittenMaxit/lib/jars/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hilmi/Desktop/WorkSpace/KittenMaxit/lib/jars/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hilmi/Desktop/WorkSpace/KittenMaxit/lib/jars/lwjgl.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="KittenMaxit/lib/natives/lwjgl"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Ahmet/Desktop/Workspace/KittenMaxit/lib/jars/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ahmet/Desktop/Workspace/KittenMaxit/lib/jars/slick.jar">
+	<classpathentry kind="lib" path="C:/Users/Hilmi/Desktop/WorkSpace/KittenMaxit/lib/jars/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hilmi/Desktop/WorkSpace/KittenMaxit/lib/jars/slick.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="KittenMaxit/lib/natives/slick"/>
 		</attributes>
