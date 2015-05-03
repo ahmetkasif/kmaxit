@@ -20,13 +20,13 @@ public class Options extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-
+		
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta)
 			throws SlickException {
-
+		
 	}
 
 	@Override
