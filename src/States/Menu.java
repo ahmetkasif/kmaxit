@@ -3,10 +3,14 @@ package States;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,6 +22,12 @@ public class Menu extends BasicGameState {
 	private String sptext, mptext, optext, crtext, exittext;
 	private int buttonAlignX = 50, buttonAlignY = 250;
 
+	public static Music menuMusic;
+	private Sound clickSound;
+	private Animation anime;
+
+	private int[] duration = { 110, 110, 110, 110, 110, 110, 110};
+
 	public Menu(int state) {
 
 	}
@@ -25,7 +35,7 @@ public class Menu extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg)
 			throws SlickException {
-		
+
 		spcolor = Color.white;
 		mpcolor = Color.white;
 		opcolor = Color.white;
@@ -37,6 +47,16 @@ public class Menu extends BasicGameState {
 		optext = "Options";
 		crtext = "Credits";
 		exittext = "Exit";
+
+		Image[] tip = { new Image("/res/img/tip1.png"),new Image("/res/img/tip2.png"),new Image("/res/img/tip3.png"),new Image("/res/img/tip4.png"),new Image("/res/img/tip3.png"),new Image("/res/img/tip2.png"),new Image("/res/img/tip1.png"), };
+
+		anime = new Animation(tip, duration, false);
+
+		menuMusic = new Music("/res/sound/iloveyouso.ogg");
+		menuMusic.play(1, 0.04f);
+
+		clickSound = new Sound("/res/sound/clickSound.wav");
+
 	}
 
 	@Override
@@ -52,9 +72,11 @@ public class Menu extends BasicGameState {
 		g.drawString(crtext, buttonAlignX, Game.height - buttonAlignY + 120);
 		g.setColor(exitcolor);
 		g.drawString(exittext, buttonAlignX, Game.height - buttonAlignY + 160);
-		
+
 		g.setColor(Color.cyan);
-		g.drawString("Kitten Maxit", 590, 50);
+		g.drawString("Kitten Maxit", (Game.width / 2) - 70, 50);
+
+		anime.draw(800, 650);
 
 	}
 
@@ -65,6 +87,8 @@ public class Menu extends BasicGameState {
 		// Screen Update
 		mouseX = Mouse.getX();
 		mouseY = Mouse.getY();
+		
+		anime.update(delta);
 
 		// Input Collection
 
@@ -72,50 +96,61 @@ public class Menu extends BasicGameState {
 			Display.destroy();
 			System.exit(0);
 		}
-		
-		if((mouseX > buttonAlignX && mouseX < buttonAlignX + 110) && (mouseY > buttonAlignY - 20) && mouseY < buttonAlignY){
+
+		if ((mouseX > buttonAlignX && mouseX < buttonAlignX + 110)
+				&& (mouseY > buttonAlignY - 20) && mouseY < buttonAlignY) {
 			spcolor = Color.red;
-			if(Mouse.isButtonDown(0)){
+			if (Mouse.isButtonDown(0)) {
 				sbg.enterState(1);
+				clickSound.play();
 			}
-		}else{
+		} else {
 			spcolor = Color.white;
 		}
-		
-		if((mouseX > buttonAlignX && mouseX < buttonAlignX + 100) && (mouseY > buttonAlignY - 60) && mouseY < buttonAlignY - 40){
+
+		if ((mouseX > buttonAlignX && mouseX < buttonAlignX + 100)
+				&& (mouseY > buttonAlignY - 60) && mouseY < buttonAlignY - 40) {
 			mpcolor = Color.red;
-			if(Mouse.isButtonDown(0)){
-				//sbg.enterState(); atanmadý
+			if (Mouse.isButtonDown(0)) {
+				// sbg.enterState(); atanmadý
+				clickSound.play();
 			}
-		}else{
+		} else {
 			mpcolor = Color.white;
 		}
-		
-		if((mouseX > buttonAlignX && mouseX < buttonAlignX + 65) && (mouseY > buttonAlignY - 100) && mouseY < buttonAlignY  - 80){
+
+		if ((mouseX > buttonAlignX && mouseX < buttonAlignX + 65)
+				&& (mouseY > buttonAlignY - 100) && mouseY < buttonAlignY - 80) {
 			opcolor = Color.red;
-			if(Mouse.isButtonDown(0)){
+			if (Mouse.isButtonDown(0)) {
 				sbg.enterState(2);
+				clickSound.play();
 			}
-		}else{
+		} else {
 			opcolor = Color.white;
 		}
-		
-		if((mouseX > buttonAlignX && mouseX < buttonAlignX + 65) && (mouseY > buttonAlignY + - 140) && mouseY < buttonAlignY - 120){
+
+		if ((mouseX > buttonAlignX && mouseX < buttonAlignX + 65)
+				&& (mouseY > buttonAlignY + -140)
+				&& mouseY < buttonAlignY - 120) {
 			crcolor = Color.red;
-			if(Mouse.isButtonDown(0)){
+			if (Mouse.isButtonDown(0)) {
 				sbg.enterState(3);
+				clickSound.play();
 			}
-		}else{
+		} else {
 			crcolor = Color.white;
 		}
-		
-		if((mouseX > buttonAlignX && mouseX < buttonAlignX + 40) && (mouseY > buttonAlignY - 180) && mouseY < buttonAlignY - 160){
+
+		if ((mouseX > buttonAlignX && mouseX < buttonAlignX + 40)
+				&& (mouseY > buttonAlignY - 180) && mouseY < buttonAlignY - 160) {
 			exitcolor = Color.red;
-			if(Mouse.isButtonDown(0)){
+			if (Mouse.isButtonDown(0)) {
+				clickSound.play();
 				Display.destroy();
 				System.exit(0);
 			}
-		}else{
+		} else {
 			exitcolor = Color.white;
 		}
 	}
