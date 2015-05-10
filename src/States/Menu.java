@@ -26,7 +26,7 @@ public class Menu extends BasicGameState {
 	private Sound clickSound;
 	private Animation anime;
 
-	private int[] duration = { 110, 110, 110, 110, 110, 110, 110};
+	private int[] duration = { 75, 75, 75, 75, 75, 75, 75};
 
 	public Menu(int state) {
 
@@ -62,6 +62,8 @@ public class Menu extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
+		g.setBackground(Color.black);
+		
 		g.setColor(spcolor);
 		g.drawString(sptext, buttonAlignX, Game.height - buttonAlignY);
 		g.setColor(mpcolor);
@@ -74,9 +76,9 @@ public class Menu extends BasicGameState {
 		g.drawString(exittext, buttonAlignX, Game.height - buttonAlignY + 160);
 
 		g.setColor(Color.cyan);
-		g.drawString("Kitten Maxit", (Game.width / 2) - 70, 50);
+		g.drawString("Kitten Maxit", (Game.width / 2) - 70, 20);
 
-		anime.draw(800, 650);
+		anime.draw(1000, 650);
 
 	}
 
@@ -112,7 +114,7 @@ public class Menu extends BasicGameState {
 				&& (mouseY > buttonAlignY - 60) && mouseY < buttonAlignY - 40) {
 			mpcolor = Color.red;
 			if (Mouse.isButtonDown(0)) {
-				// sbg.enterState(); atanmadý
+				sbg.enterState(6);
 				clickSound.play();
 			}
 		} else {

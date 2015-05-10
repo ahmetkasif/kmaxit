@@ -43,9 +43,7 @@ public class Options extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		g.setColor(Color.cyan);
-		g.drawString("Kitten Maxit", (Game.width / 2) - 70, 50);
-		
-		g.drawString("" + mouseY, 1200, 30);
+		g.drawString("Options", (Game.width / 2) - 70, 20);
 
 		g.setColor(grcolor);
 		g.drawString(grtext, (Game.width / 2) - 50, (Game.height / 2) - 100);
