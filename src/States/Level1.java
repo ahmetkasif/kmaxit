@@ -25,25 +25,49 @@ public class Level1 extends BasicGameState {
 	private int texturesize;
 	private Number[][] maxitmap = new Number[5][5];
 	private Player player1, player2;
-	private Random randomx, randomy;
+	@SuppressWarnings("unused")
+	// but we used it :(
+	private Random randomx, randomy; // starting point randomization
 	private int spointx, spointy;
+	private boolean pTurn; // if true, player 1 plays, if false player 2.
 
 	public Level1(int state) {
 	}
-	
-	public void markSelectable(int spointx, int spointy){
-		for (int i = spointx; i < 5; i++) {
-			maxitmap[i][spointy].setSelectable(true); // on horizontal to right
+
+	public void markSelectable(int spointx, int spointy) {
+
+		for (int i = 0; i < 5; i++) {
+			maxitmap[i][spointy].setState(1);
 		}
-		for (int i = spointy; i < 5; i++) {
-			maxitmap[spointx][i].setSelectable(true); // on vertical to down
+
+		for (int i = 0; i < 5; i++) {
+			maxitmap[spointx][i].setState(1);
 		}
-		for (int i = spointx; i > 0; i--) {
-			maxitmap[i - 1][spointy].setSelectable(true); // on horizontal to left
+
+		maxitmap[spointx][spointy].setState(3);
+	}
+
+	public void undoSelectable(int spointx, int spointy) {
+
+		for (int i = 0; i < 5; i++) {
+			for (int k = 0; k < 5; k++) {
+				if (maxitmap[i][k].getState() == 1
+						|| maxitmap[i][k].getState() == 2) {
+					maxitmap[i][k].setState(0);
+				}
+			}
 		}
-		for (int i = spointy; i > 0; i--) {
-			maxitmap[spointx][i - 1].setSelectable(true); // on vertical to up
+	}
+
+	public void restart() {
+		for (int i = 0; i < 5; i++) {
+			for (int k = 0; k < 5; k++) {
+				maxitmap[i][k].reset();
+			}
 		}
+
+		player1.resetScore();
+		player2.resetScore();
 	}
 
 	@Override
@@ -73,7 +97,7 @@ public class Level1 extends BasicGameState {
 		spointx = (randomx = new Random()).nextInt(5);
 		spointy = (randomy = new Random()).nextInt(5);
 
-		maxitmap[spointx][spointy].setSelected(true);
+		maxitmap[spointx][spointy].setState(3);
 
 	}
 
@@ -103,6 +127,7 @@ public class Level1 extends BasicGameState {
 		g.setColor(Color.red);
 		g.drawString(player2.getName() + " : " + player2.getScore(), 1100, 200);
 
+		pTurn = true;
 	}
 
 	@Override
@@ -113,6 +138,36 @@ public class Level1 extends BasicGameState {
 		mouseY = Mouse.getY();
 
 		markSelectable(spointx, spointy);
+
+		for (int i = 0; i < 5; i++) {
+			for (int k = 0; k < 5; k++) {
+				if (maxitmap[i][k].getState() == 1) {
+					if (maxitmap[i][k].inbound(mouseX, Game.height - mouseY)) {
+						maxitmap[i][k].setState(2);
+						if (Mouse.isButtonDown(0)) {
+							undoSelectable(spointx, spointy);
+							maxitmap[i][k].setState(3);
+
+							spointx = i;
+							spointy = k;
+
+							if (pTurn) {
+								player1.addScore(maxitmap[i][k].getNumber());
+								pTurn = false;
+								System.out.println(pTurn);
+							} else if (pTurn == false) {
+								player2.addScore(maxitmap[i][k].getNumber());
+								pTurn = true;
+								System.out.println(pTurn + "1");
+							}
+
+						}
+					} else {
+						maxitmap[i][k].setState(1);
+					}
+				}
+			}
+		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			Display.destroy();
@@ -135,6 +190,7 @@ public class Level1 extends BasicGameState {
 			backcolor = Color.red;
 			if (Mouse.isButtonDown(0)) {
 				clickSound.play();
+				restart();
 				sbg.enterState(0);
 			}
 		} else {

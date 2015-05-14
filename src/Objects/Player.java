@@ -13,6 +13,10 @@ public class Player {
 		return score;
 	}
 
+	public void resetScore() {
+		this.score = 0;
+	}
+
 	public void setScore(int score) {
 		this.score = score;
 	}
@@ -25,8 +29,8 @@ public class Player {
 		this.name = name;
 	}
 
-	public void addScore(int score){
+	public void addScore(int score) {
 		this.score += score;
 	}
-	
+
 }

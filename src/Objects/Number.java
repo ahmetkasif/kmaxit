@@ -15,16 +15,17 @@ public class Number {
 	private Animation anime;
 	private Image[] animeimg = new Image[5];
 
-	private int[] duration = { 100, 100, 100, 100, 100};
+	private int[] duration = { 100, 100, 100, 100, 100 };
 	private int number;
 	private int x, y;
 	public int texturesize;
-	private boolean selected, selectable, mouseOver;
+	private int state; // 0 for base, 1 for selectable, 2 for selectable and
+						// mouseover, 3 for selected.
 
 	public Number(int x, int y) throws SlickException {
 
 		base = new Image("/res/img/level1/base.png");
-		selectablebase = new Image("/res/img/level1/animbase1.png");
+		selectablebase = new Image("/res/img/level1/selectablebase.png");
 		animbase1 = new Image("/res/img/level1/animbase1.png");
 		animbase2 = new Image("/res/img/level1/animbase2.png");
 		animbase3 = new Image("/res/img/level1/animbase3.png");
@@ -43,74 +44,68 @@ public class Number {
 
 		this.x = x;
 		this.y = y;
-		
+
 		texturesize = 64;
-		
-		selected = false;
-		selectable = false;
 
 	}
 
-	public boolean isSelected() {
-		return selected;
+	public int getNumber() {
+		return number;
 	}
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	public int getX() {
+		return x;
 	}
 
-	public boolean isSelectable() {
-		return selectable;
+	public int getY() {
+		return y;
 	}
 
-	public void setSelectable(boolean selectable) {
-		this.selectable = selectable;
+	public int getState() {
+		return state;
 	}
 
-	public boolean isMouseOver() {
-		return mouseOver;
+	public void reset() {
+		this.state = 0;
 	}
 
-	public void setMouseOver(boolean mouseOver) {
-		this.mouseOver = mouseOver;
+	public void setState(int state) {
+		if (this.state != 3) {
+			this.state = state;
+		}
 	}
 
 	public boolean inbound(float mouseX, float mouseY) {
-		if (mouseX > x && mouseX < x + texturesize && mouseY > y && mouseY < y + texturesize) {
+		if (mouseX > x && mouseX < x + texturesize && mouseY > y
+				&& mouseY < y + texturesize) {
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public void draw(Graphics g) {
 
-		// base condition
-		if (!isSelectable() && !isSelected()) {
+		switch (state) {
+		case 0:
 			g.drawImage(base, x, y);
 			g.setColor(Color.black);
-			g.drawString("" + number, x + 24,y + 24);
-		}
-
-		// If it is selectable,
-		else if (isSelectable() && !isSelected() && !isMouseOver()) {
+			g.drawString("" + number, x + 24, y + 24);
+			break;
+		case 1:
 			g.drawImage(selectablebase, x, y);
 			g.setColor(Color.black);
-			g.drawString("" + number, x + 24,y + 24);
-		}
-
-		// If it is selectable and mouseOver,
-		else if (isMouseOver()) {
+			g.drawString("" + number, x + 24, y + 24);
+			break;
+		case 2:
 			anime.draw(x, y);
 			g.setColor(Color.black);
 			g.drawString("" + number, x + 24, y + 24);
-		}
-
-		// if it is selected
-		else if (isSelected()) {
+			break;
+		case 3:
 			g.drawImage(selectedbase, x, y);
 			g.setColor(Color.white);
 			g.drawString("" + number, x + 24, y + 24);
+			break;
 		}
-
 	}
 }

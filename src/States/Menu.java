@@ -26,7 +26,7 @@ public class Menu extends BasicGameState {
 	private Sound clickSound;
 	private Animation anime;
 
-	private int[] duration = { 75, 75, 75, 75, 75, 75, 75};
+	private int[] duration = { 75, 75, 75, 75, 75, 75, 75 };
 
 	public Menu(int state) {
 
@@ -48,7 +48,10 @@ public class Menu extends BasicGameState {
 		crtext = "Credits";
 		exittext = "Exit";
 
-		Image[] tip = { new Image("/res/img/tip1.png"),new Image("/res/img/tip2.png"),new Image("/res/img/tip3.png"),new Image("/res/img/tip4.png"),new Image("/res/img/tip3.png"),new Image("/res/img/tip2.png"),new Image("/res/img/tip1.png"), };
+		Image[] tip = { new Image("/res/img/tip1.png"),
+				new Image("/res/img/tip2.png"), new Image("/res/img/tip3.png"),
+				new Image("/res/img/tip4.png"), new Image("/res/img/tip3.png"),
+				new Image("/res/img/tip2.png"), new Image("/res/img/tip1.png"), };
 
 		anime = new Animation(tip, duration, false);
 
@@ -63,7 +66,7 @@ public class Menu extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		g.setBackground(Color.black);
-		
+
 		g.setColor(spcolor);
 		g.drawString(sptext, buttonAlignX, Game.height - buttonAlignY);
 		g.setColor(mpcolor);
@@ -89,7 +92,7 @@ public class Menu extends BasicGameState {
 		// Screen Update
 		mouseX = Mouse.getX();
 		mouseY = Mouse.getY();
-		
+
 		anime.update(delta);
 
 		// Input Collection
