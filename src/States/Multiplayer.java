@@ -29,7 +29,7 @@ public class Multiplayer extends BasicGameState {
 	// but we used it :(
 	private Random randomx, randomy; // starting point randomization
 	private int spointx, spointy;
-	private boolean pTurn; // if true, player 1 plays, if false player 2.
+	private int pTurn; // if 1, player 1 plays; if 2, player 2.
 
 	public Multiplayer(int state) {
 	}
@@ -74,8 +74,8 @@ public class Multiplayer extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame sbg)
 			throws SlickException {
 
-		player1 = new Player("player1");
-		player2 = new Player("player2");
+		player1 = new Player("player1", true);
+		player2 = new Player("player2", false);
 
 		texturesize = 64;
 
@@ -127,7 +127,7 @@ public class Multiplayer extends BasicGameState {
 		g.setColor(Color.red);
 		g.drawString(player2.getName() + " : " + player2.getScore(), 1100, 200);
 
-		pTurn = true;
+		pTurn = 1;
 	}
 
 	@Override
@@ -145,20 +145,28 @@ public class Multiplayer extends BasicGameState {
 					if (maxitmap[i][k].inbound(mouseX, Game.height - mouseY)) {
 						maxitmap[i][k].setState(2);
 						if (Mouse.isButtonDown(0)) {
-							undoSelectable(spointx, spointy);
-							maxitmap[i][k].setState(3);
+							if (player1.getTurn() && !player2.getTurn()) {
+								undoSelectable(spointx, spointy);
+								maxitmap[i][k].setState(3);
 
-							spointx = i;
-							spointy = k;
+								spointx = i;
+								spointy = k;
 
-							if (pTurn) {
 								player1.addScore(maxitmap[i][k].getNumber());
-								pTurn = false;
-								System.out.println(pTurn);
-							} else if (pTurn == false) {
+								player1.setTurn(false);
+								player2.setTurn(true);
+							}
+
+							else if (player2.getTurn() && !player1.getTurn()) {
+								undoSelectable(spointx, spointy);
+								maxitmap[i][k].setState(3);
+
+								spointx = i;
+								spointy = k;
+
 								player2.addScore(maxitmap[i][k].getNumber());
-								pTurn = true;
-								System.out.println(pTurn + "1");
+								player2.setTurn(false);
+								player1.setTurn(true);
 							}
 
 						}
