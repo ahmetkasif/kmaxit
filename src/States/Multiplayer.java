@@ -8,6 +8,7 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
@@ -29,7 +30,7 @@ public class Multiplayer extends BasicGameState {
 	// but we used it :(
 	private Random randomx, randomy; // starting point randomization
 	private int spointx, spointy;
-	private int pTurn; // if 1, player 1 plays; if 2, player 2.
+	private Image background, frame;
 
 	public Multiplayer(int state) {
 	}
@@ -73,6 +74,8 @@ public class Multiplayer extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg)
 			throws SlickException {
+		background = new Image("/res/img/level1/bgmini2.png");
+		frame = new Image("/res/img/level1/frame.png");
 
 		player1 = new Player("player1", true);
 		player2 = new Player("player2", false);
@@ -104,7 +107,9 @@ public class Multiplayer extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		g.setBackground(Color.darkGray);
+		g.drawImage(background, 0, 0);
+		g.drawImage(frame, (Game.width / 2)
+				- (texturesize * 3) - 20, 180);
 
 		for (int i = 0; i < 5; i++) {
 			for (int k = 0; k < 5; k++) {
@@ -122,12 +127,10 @@ public class Multiplayer extends BasicGameState {
 		g.drawString(exittext, Game.width - 100, 30);
 
 		g.setColor(Color.red);
-		g.drawString(player1.getName() + " : " + player1.getScore(), 100, 200);
+		g.drawString(player1.getName() + " : " + player1.getScore(), 50, 100);
 
 		g.setColor(Color.red);
-		g.drawString(player2.getName() + " : " + player2.getScore(), 1100, 200);
-
-		pTurn = 1;
+		g.drawString(player2.getName() + " : " + player2.getScore(), 1150, 100);
 	}
 
 	@Override

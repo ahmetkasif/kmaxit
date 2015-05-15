@@ -48,7 +48,5 @@ public class Game extends StateBasedGame {
 		app = new AppGameContainer(new Game(name), width, height, true);
 		app.setVSync(true);
 		app.start();
-		
 	}
-	
 }

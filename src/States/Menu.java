@@ -25,6 +25,7 @@ public class Menu extends BasicGameState {
 	public static Music menuMusic;
 	private Sound clickSound;
 	private Animation anime;
+	private Image background;
 
 	private int[] duration = { 75, 75, 75, 75, 75, 75, 75 };
 
@@ -35,6 +36,8 @@ public class Menu extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg)
 			throws SlickException {
+		
+		background = new Image("/res/img/menu/bgmini3.png");
 
 		spcolor = Color.white;
 		mpcolor = Color.white;
@@ -48,15 +51,15 @@ public class Menu extends BasicGameState {
 		crtext = "Credits";
 		exittext = "Exit";
 
-		Image[] tip = { new Image("/res/img/tip1.png"),
-				new Image("/res/img/tip2.png"), new Image("/res/img/tip3.png"),
-				new Image("/res/img/tip4.png"), new Image("/res/img/tip3.png"),
-				new Image("/res/img/tip2.png"), new Image("/res/img/tip1.png"), };
+		Image[] tip = { new Image("/res/img/menu/tip1.png"),
+				new Image("/res/img/menu/tip2.png"), new Image("/res/img/menu/tip3.png"),
+				new Image("/res/img/menu/tip4.png"), new Image("/res/img/menu/tip3.png"),
+				new Image("/res/img/menu/tip2.png"), new Image("/res/img/menu/tip1.png"), };
 
 		anime = new Animation(tip, duration, false);
 
 		menuMusic = new Music("/res/sound/iloveyouso.ogg");
-		menuMusic.play(1, 0.04f);
+		menuMusic.loop(1, 0.04f);
 
 		clickSound = new Sound("/res/sound/clickSound.wav");
 
@@ -65,16 +68,20 @@ public class Menu extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		g.setBackground(Color.black);
+		g.drawImage(background, 0, 0);
 
 		g.setColor(spcolor);
 		g.drawString(sptext, buttonAlignX, Game.height - buttonAlignY);
+		
 		g.setColor(mpcolor);
 		g.drawString(mptext, buttonAlignX, Game.height - buttonAlignY + 40);
+		
 		g.setColor(opcolor);
 		g.drawString(optext, buttonAlignX, Game.height - buttonAlignY + 80);
+		
 		g.setColor(crcolor);
 		g.drawString(crtext, buttonAlignX, Game.height - buttonAlignY + 120);
+		
 		g.setColor(exitcolor);
 		g.drawString(exittext, buttonAlignX, Game.height - buttonAlignY + 160);
 
@@ -82,7 +89,6 @@ public class Menu extends BasicGameState {
 		g.drawString("Kitten Maxit", (Game.width / 2) - 70, 20);
 
 		anime.draw(1000, 650);
-
 	}
 
 	@Override
