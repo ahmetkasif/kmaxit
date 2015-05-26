@@ -68,7 +68,7 @@ public class Menu extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		g.drawImage(background, 0, 0);
+		g.drawImage(background.getScaledCopy(Game.width, Game.height), 0, 0);
 
 		g.setColor(spcolor);
 		g.drawString(sptext, buttonAlignX, Game.height - buttonAlignY);
@@ -140,7 +140,7 @@ public class Menu extends BasicGameState {
 		} else {
 			opcolor = Color.white;
 		}
-
+		
 		if ((mouseX > buttonAlignX && mouseX < buttonAlignX + 65)
 				&& (mouseY > buttonAlignY + -140)
 				&& mouseY < buttonAlignY - 120) {

@@ -77,8 +77,8 @@ public class Multiplayer extends BasicGameState {
 		background = new Image("/res/img/level1/bgmini2.png");
 		frame = new Image("/res/img/level1/frame.png");
 
-		player1 = new Player("player1", true);
-		player2 = new Player("player2", false);
+		player1 = new Player("Ahmet", true);
+		player2 = new Player("Abdullah", false);
 
 		texturesize = 64;
 
@@ -107,7 +107,7 @@ public class Multiplayer extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		g.drawImage(background, 0, 0);
+		g.drawImage(background.getScaledCopy(Game.width, Game.height), 0, 0);
 		g.drawImage(frame, (Game.width / 2)
 				- (texturesize * 3) - 20, 180);
 

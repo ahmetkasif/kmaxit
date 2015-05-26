@@ -89,7 +89,11 @@ public class Credits extends BasicGameState {
 			Display.destroy();
 			System.exit(0);
 		}
-		y--;
+		y--; 
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+			sbg.enterState(0);
+		}
 		
 		
 		if(y + (vertAlign * 28) < - 50){

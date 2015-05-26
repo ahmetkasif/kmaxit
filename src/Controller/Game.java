@@ -8,21 +8,21 @@ import org.newdawn.slick.state.StateBasedGame;
 import States.Audio;
 import States.Credits;
 import States.Graphics;
-import States.Level1;
 import States.Menu;
-import States.Options;
 import States.Multiplayer;
+import States.Options;
+import States.Singleplayer;
 
 public class Game extends StateBasedGame {
 	public static final String name = "Kitten Maxit";
 	public static final int width = 1366, height = 768;
-	public static int menu = 0, level1 = 1, options = 2, credits = 3, graphics = 4, audio = 5, multiplayer = 6;
+	public static int menu = 0, singleplayer = 1, options = 2, credits = 3, graphics = 4, audio = 5, multiplayer = 6; // state id's
 
 	public Game(String name) {
 		super(name);
 		
 		this.addState(new Menu(menu));
-		this.addState(new Level1(level1));
+		this.addState(new Singleplayer(singleplayer));
 		this.addState(new Options(options));
 		this.addState(new Credits(credits));
 		this.addState(new Graphics(graphics));
@@ -33,7 +33,7 @@ public class Game extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		this.getState(menu).init(container, this);
-		this.getState(level1).init(container, this);
+		this.getState(singleplayer).init(container, this);
 		this.getState(options).init(container, this);
 		this.getState(credits).init(container, this);
 		this.getState(graphics).init(container, this);
