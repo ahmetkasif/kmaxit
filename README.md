@@ -1,7 +1,5 @@
 # KittenMaxit
 Remake of maxit game using Graphics
-# KittenMaxit
-Remake of maxit game using Graphics
 
 **Problem**     
  Writing a program to play MAXIT. The board is represented as an N-by-N grid of numbers randomly placed at the start of the game. One position is designated as the initial current 
@@ -36,8 +34,8 @@ for all k values starting from the last chosen point to 5 on y axis,
 ```
 
 #Screenshots
-![Maxit1](Screenshots/1.png)
-![Maxit2](Screenshots/2.png)
+![Maxit1](http://i.imgur.com/mifuTJm.png)
+![Maxit2](http://i.imgur.com/snSs8Z2.png)
 
 
 
