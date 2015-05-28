@@ -1,3 +1,4 @@
+
 package States;
 
 import org.lwjgl.input.Keyboard;
@@ -72,7 +73,7 @@ public class Credits extends BasicGameState {
 		g.drawString("KenneyDonation", x + 150, y + (vertAlign * 18));
 		g.drawString("Slick2D Library Developers", x + 150, y + (vertAlign * 19));
 		g.drawString("GitHub", x + 150, y + (vertAlign * 20));
-		g.drawString("Celal Bayar University\n Computer Engineering Departmant Academicians", x + 150, y + (vertAlign * 21));
+		g.drawString("Celal Bayar University\n Computer Engineering Departmant", x + 150, y + (vertAlign * 21));
 		
 		
 		g.drawImage(kcode, x + 150, y + (vertAlign * 25));
@@ -91,7 +92,7 @@ public class Credits extends BasicGameState {
 		}
 		y--; 
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			sbg.enterState(0);
 		}
 		
