@@ -1,7 +1,6 @@
 package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.codeaia.maxit.controller.Game;
 
 public class State {
 	public int id;
@@ -12,7 +11,7 @@ public class State {
 	}
 
 	public void create() {
-		batch = Game.batch;
+		batch = new SpriteBatch();
 	}
 
 	public void update(float mX, float mY, float delta) {

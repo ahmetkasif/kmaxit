@@ -2,14 +2,19 @@ package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.ui.Button;
+import com.codeaia.maxit.ui.Text;
 
 public class Menu extends State {
 	private Sprite bg;
-	private Button singleplayer, options, credits, exit;
+	private Button play, options, credits, exit;
+	private Text text;
+	private Color color;
+	private int count = 0;
 	
 	public Menu(int id) {
 		super(id);
@@ -19,16 +24,19 @@ public class Menu extends State {
 	@Override
 	public void create() {
 		super.create();
+		
+		color = new Color();
 
 		bg = new Sprite(new Texture(Gdx.files.internal("img/menu/menubg.png")));
-
-		singleplayer = new Button("img/ui/720p/play", Game.width / 64,
+		text = new Text("Powered by LibGDX!", Gdx.graphics.getWidth() - 200, 150);
+		
+		play = new Button("Play", Game.width / 64,
 				Game.height / 4);
-		options = new Button("img/ui/720p/options", Game.width / 64,
+		options = new Button("Options", Game.width / 64,
 				Game.height * 3 / 16);
-		credits = new Button("img/ui/720p/credits", Game.width / 64,
+		credits = new Button("Credits", Game.width / 64,
 				Game.height * 2 / 16);
-		exit = new Button("img/ui/720p/exit", Game.width / 64,
+		exit = new Button("Exit", Game.width / 64,
 				Game.height * 1 / 16);
 	}
 
@@ -39,8 +47,34 @@ public class Menu extends State {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
 		}
+		
+		switch(count % 8){
+			case 0:
+				color = new Color(200, 100, 50, 1); // red
+				count++;
+			case 1:
+				color = new Color(200, 125, 50, 1); // orange to red
+				count++;
+			case 2:
+				color = new Color(200, 150, 50, 1); // orange to yellow
+				count++;
+			case 3:
+				color = new Color(200, 175, 50, 1); // yellow to orange
+				count++;
+			case 4:
+				color = new Color(175, 175, 50, 1); // orange
+				count++;
+			case 5:
+				color = new Color(200, 175, 50, 1); // yellow to orange
+				count++;
+			case 6:
+				color = new Color(200, 150, 50, 1); // orange to yellow
+				count++;
+			case 7:
+				color = new Color(200, 125, 50, 1); // orange to red
+		}
 
-		if (singleplayer.isClicked(mX, mY)) {
+		if (play.isClicked(mX, mY)) {
 			Game.state = 2;
 			Game.singleplayer = new Singleplayer(2);
 			if (Game.menu != null) {
@@ -52,7 +86,7 @@ public class Menu extends State {
 			if (Game.credits != null) {
 				Game.credits.destroy();
 			}
-			singleplayer.playSound();
+			play.playSound();
 		}
 
 		if (options.isClicked(mX, mY)) {
@@ -72,7 +106,7 @@ public class Menu extends State {
 
 		if (credits.isClicked(mX, mY)) {
 			Game.state = 4;
-			Game.credits = new Options(4);
+			Game.credits = new Credits(4);
 			if (Game.menu != null) {
 				Game.menu.destroy();
 			}
@@ -100,10 +134,13 @@ public class Menu extends State {
 		bg.draw(batch);
 		batch.end();
 
-		singleplayer.render(mX, mY);
+		play.render(mX, mY);
 		options.render(mX, mY);
 		credits.render(mX, mY);
 		exit.render(mX, mY);
+
+		text.render(color);
+		
 	}
 
 	@Override

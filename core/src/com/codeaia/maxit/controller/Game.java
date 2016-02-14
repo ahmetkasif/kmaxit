@@ -3,8 +3,8 @@ package com.codeaia.maxit.controller;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.codeaia.maxit.state.Menu;
 import com.codeaia.maxit.state.State;
 import com.codeaia.maxit.ui.Text;
@@ -17,15 +17,12 @@ public class Game extends ApplicationAdapter {
 	public static float mX, mY, delta;
 	private Music music;
 	
-	public static SpriteBatch batch;
 	public static State menu, singleplayer, options, credits;
 	private Text fps;
 	
 	@Override
 	public void create() {
-		batch = new SpriteBatch();
-		
-		fps = new Text("Fps : " + Gdx.graphics.getDeltaTime(), 25, Gdx.graphics.getHeight() - 25) ;
+		fps = new Text("Fps : " + Gdx.graphics.getDeltaTime(), 10, Gdx.graphics.getHeight() - 50) ;
 		
 		mX = 0;
 		mY = 0;
@@ -70,7 +67,7 @@ public class Game extends ApplicationAdapter {
 	public void render() {
 		update();
 
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if (state == 1) {
@@ -91,7 +88,7 @@ public class Game extends ApplicationAdapter {
 			}
 		}
 		
-		fps.render();
+		fps.render(Color.WHITE);
 	}
 
 	@Override

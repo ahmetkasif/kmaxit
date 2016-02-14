@@ -2,34 +2,25 @@ package com.codeaia.maxit.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.codeaia.maxit.controller.Game;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Button {
 	private SpriteBatch batch;
-	private Sprite sprite, spriteHover;
-	
+	private ShapeRenderer sr;
+	private Text text;
 	private Sound clickSound;
-	
-	private String title;
 	private float x, y;
-	private int width, height;
 	
-	public Button(String path, float x, float y){
-		setTitle(path);
+	public Button(String value, float x, float y){
+		text = new Text(value, x, y);
 		setX(x);
 		setY(y);
 		
-		batch = Game.batch;
-		sprite = new Sprite(new Texture(path + ".png"));
-		sprite.setPosition(x, y);
-		spriteHover = new Sprite(new Texture(path + "H.png"));
-		spriteHover.setPosition(x, y);
-		setWidth((int) sprite.getWidth());
-		setHeight((int) sprite.getHeight());
-		
+		sr = new ShapeRenderer();
+		batch = new SpriteBatch();
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sound/clicksound.wav"));
 	}
 	
@@ -44,33 +35,33 @@ public class Button {
 	}
 	
 	public void render(float mX, float mY){
-		if(isHovered(mX, mY)){
+		if(!isHovered(mX, mY)){
 			batch.begin();
-			spriteHover.draw(batch);
+			sr.begin(ShapeType.Line);
+			sr.setColor(Color.BLACK);
+			sr.rect(x, y, 100, text.getHeight());
+			sr.end();
 			batch.end();
-		}else{
+			text.render(Color.WHITE);
+		} else{
 			batch.begin();
-			sprite.draw(batch);
+			sr.begin(ShapeType.Line);
+			sr.setColor(Color.BLACK);
+			sr.rect(x, y, 100, text.getHeight());
+			sr.end();
 			batch.end();
+			text.render(Color.CYAN);
 		}
 	}
 	
 	public Boolean isHovered(float mX, float mY){
-		if(mX > x && mX < x + width && mY > y && mY < y + height){
+		if(mX > x && mX < x + 100 && mY > y && mY < y + text.getHeight()){
 			return true;
 		}else{
 			return false;
 		}
 	}
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public float getX() {
 		return x;
 	}
@@ -85,22 +76,6 @@ public class Button {
 
 	public void setY(float y) {
 		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 
 	public void destroy() {

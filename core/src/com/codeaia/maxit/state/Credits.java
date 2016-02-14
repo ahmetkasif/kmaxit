@@ -2,12 +2,9 @@ package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codeaia.maxit.controller.Game;
 
 public class Credits extends State {
-	private Sprite creditsBg;
 
 	public Credits(int id) {
 		super(id);
@@ -17,8 +14,6 @@ public class Credits extends State {
 	@Override
 	public void create() {
 		super.create();
-		creditsBg = new Sprite(new Texture(
-				Gdx.files.internal("img/credits/creditsbg.png")));
 	}
 
 	@Override
@@ -45,7 +40,7 @@ public class Credits extends State {
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
 		batch.begin();
-		creditsBg.draw(batch);
+
 		batch.end();
 	}
 

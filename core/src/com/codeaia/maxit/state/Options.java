@@ -17,8 +17,7 @@ public class Options extends State {
 	@Override
 	public void create() {
 		super.create();
-		bg = new Sprite(new Texture(
-				Gdx.files.internal("img/options/optionsbg.png")));
+		bg = new Sprite(new Texture(	Gdx.files.internal("img/optionsbg.png")));
 	}
 
 	@Override
