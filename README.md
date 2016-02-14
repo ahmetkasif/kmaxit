@@ -1,5 +1,5 @@
 # KittenMaxit
-Remake of maxit game using Graphics
+Remake of maxit game using Java and Slick2D-LWJGL Frameworks.
 
 **Problem**     
  Writing a program to play MAXIT. The board is represented as an N-by-N grid of numbers randomly placed at the start of the game. One position is designated as the initial current 
