@@ -5,10 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codeaia.maxit.controller.Game;
+import com.codeaia.maxit.ui.Button;
 
 public class Options extends State {
 	private Sprite bg;
-
+	private Button graphics, audio; 
+	private int layer, state;
+	
 	public Options(int id) {
 		super(id);
 		create();
@@ -18,6 +21,14 @@ public class Options extends State {
 	public void create() {
 		super.create();
 		bg = new Sprite(new Texture(	Gdx.files.internal("img/optionsbg.png")));
+		
+		graphics = new Button("Graphics", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 + 64);
+		audio = new Button("Audio", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - 64);
+		
+		
+		
+		layer = 0;
+		state = 0;
 	}
 
 	@Override
@@ -37,7 +48,16 @@ public class Options extends State {
 				Game.credits.destroy();
 			}
 		}
+		
+		if(graphics.isClicked(mX, mY)){
+			layer = 1;
+		}
 
+		if(audio.isClicked(mX, mY)){
+			layer = 2;
+		}
+		
+		
 	}
 
 	@Override
@@ -46,6 +66,16 @@ public class Options extends State {
 		batch.begin();
 		bg.draw(batch);
 		batch.end();
+		
+		if(layer == 0){
+			graphics.render(mX, mY);
+			audio.render(mX, mY);
+		} else if(layer == 1){
+			// TODO graphics preferences
+		} else if(layer == 2){
+			// TODO audio preferences
+		}
+		
 	}
 
 	@Override

@@ -9,29 +9,30 @@ import com.codeaia.maxit.state.Menu;
 import com.codeaia.maxit.state.State;
 import com.codeaia.maxit.ui.Text;
 
-public class Game extends ApplicationAdapter {	
+public class Game extends ApplicationAdapter {
 
 	public static final float width = 1280;
 	public static final float height = 720;
 	public static int state;
 	public static float mX, mY, delta;
 	private Music music;
-	
+
 	public static State menu, singleplayer, options, credits;
 	private Text fps;
-	
+
 	@Override
 	public void create() {
-		fps = new Text("Fps : " + Gdx.graphics.getDeltaTime(), 10, Gdx.graphics.getHeight() - 50) ;
-		
+		fps = new Text("Fps : " + Gdx.graphics.getDeltaTime(), 10,
+				Gdx.graphics.getHeight() - 50);
+
 		mX = 0;
 		mY = 0;
 		delta = 0;
-		
+
 		music = Gdx.audio.newMusic(Gdx.files.internal("sound/iloveyouso.ogg"));
 		music.setVolume(0.4f);
 		music.play();
-		
+
 		state = 1;
 		menu = new Menu(1);
 	}
@@ -41,26 +42,26 @@ public class Game extends ApplicationAdapter {
 		mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		delta = Gdx.graphics.getRawDeltaTime();
 
-		 if (state == 1) {
-			if(!menu.equals(null)){
+		if (state == 1) {
+			if (!menu.equals(null)) {
 				menu.update(mX, mY, delta);
 			}
 		} else if (state == 2) {
-			if(!singleplayer.equals(null)){
+			if (!singleplayer.equals(null)) {
 				singleplayer.update(mX, mY, delta);
 			}
 		} else if (state == 3) {
-			if(!options.equals(null)){
+			if (!options.equals(null)) {
 				options.update(mX, mY, delta);
 			}
 		} else if (state == 4) {
-			if(!credits.equals(null)){
+			if (!credits.equals(null)) {
 				credits.update(mX, mY, delta);
 			}
 		}
-		 
-		 fps.setText("FPS : " + (int) (1 / Gdx.graphics.getRawDeltaTime()));
-		 
+
+		fps.setText("FPS : " + (int) (1 / Gdx.graphics.getRawDeltaTime()));
+
 	}
 
 	@Override
@@ -68,26 +69,29 @@ public class Game extends ApplicationAdapter {
 		update();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT
+				| GL20.GL_DEPTH_BUFFER_BIT
+				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
+						: 0));
+
 		if (state == 1) {
-			if(!menu.equals(null)){
-			menu.render(mX, mY);
+			if (!menu.equals(null)) {
+				menu.render(mX, mY);
 			}
 		} else if (state == 2) {
-			if(!singleplayer.equals(null)){
-			singleplayer.render(mX, mY);
+			if (!singleplayer.equals(null)) {
+				singleplayer.render(mX, mY);
 			}
 		} else if (state == 3) {
-			if(!options.equals(null)){
-			options.render(mX, mY);
+			if (!options.equals(null)) {
+				options.render(mX, mY);
 			}
 		} else if (state == 4) {
-			if(!credits.equals(null)){
-			credits.render(mX, mY);
+			if (!credits.equals(null)) {
+				credits.render(mX, mY);
 			}
 		}
-		
+
 		fps.render(Color.WHITE);
 	}
 

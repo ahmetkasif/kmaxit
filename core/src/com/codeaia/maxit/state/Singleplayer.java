@@ -4,20 +4,23 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.objects.Number;
 import com.codeaia.maxit.objects.Player;
-
-;
+import com.codeaia.maxit.ui.Text;
 
 public class Singleplayer extends State {
 	private Sprite bg;
-	private Sprite table;
-	private Player player1, computer;
+	private ShapeRenderer sr;
+	private Player player1, player2;
 	private Number[][] maxitmap = new Number[5][5];
 	private int spointx, spointy;
+	private Text p1Score, p2Score;
 
 	public Singleplayer(int id) {
 		super(id);
@@ -28,13 +31,13 @@ public class Singleplayer extends State {
 	public void create() {
 		super.create();
 		bg = new Sprite(new Texture(Gdx.files.internal("img/play/playbg.png")));
-		table = new Sprite(
-				new Texture(Gdx.files.internal("img/play/frame.png")));
-		table.setPosition(Gdx.graphics.getWidth() / 2 - table.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2 - table.getHeight() / 2);
+		sr = new ShapeRenderer();
 
 		player1 = new Player("You", true);
-		computer = new Player("Computer (Easy)", false);
+		player2 = new Player("Computer (Easy)", false);
+		
+		p1Score = new Text(player1.getName() + ": " + player1.getScore(), 50, Gdx.graphics.getHeight() * 3 / 4);
+		p2Score = new Text(player2.getName() + ": " + player2.getScore(), Gdx.graphics.getWidth() - 50 - (player2.getName().length() + 5) * 8, Gdx.graphics.getHeight() * 3 / 4);
 
 		for (int i = 0; i < 5; i++) {
 			for (int k = 0; k < 5; k++) {
@@ -66,15 +69,17 @@ public class Singleplayer extends State {
 				Game.credits.destroy();
 			}
 		}
+		
+		p1Score.setText(player1.getName() + ": " + player1.getScore());
+		p2Score.setText(player2.getName() + ": " + player2.getScore());
 
 		markSelectable(spointx, spointy);
 
-		if (player1.getTurn() && !computer.getTurn()) {
+		if (player1.getTurn() && !player2.getTurn()) {
 			for (int i = 0; i < 5; i++) {
 				for (int k = 0; k < 5; k++) {
 					if (maxitmap[i][k].getState() == 1) {
-						if (maxitmap[i][k]
-								.inbound(mX, Game.height - mY)) {
+						if (maxitmap[i][k].inbound(mX, mY)) {
 							maxitmap[i][k].setState(2);
 							if (Gdx.input.isTouched()) {
 								undoSelectable(spointx, spointy);
@@ -85,7 +90,7 @@ public class Singleplayer extends State {
 
 								player1.addScore(maxitmap[i][k].getNumber());
 								player1.setTurn(false);
-								computer.setTurn(true);
+								player2.setTurn(true);
 							}
 						} else {
 							maxitmap[i][k].setState(1);
@@ -95,7 +100,7 @@ public class Singleplayer extends State {
 			}
 		}
 
-		if (!player1.getTurn() && computer.getTurn()) {
+		if (!player1.getTurn() && player2.getTurn()) {
 			greedyAI();
 		}
 	}
@@ -103,10 +108,22 @@ public class Singleplayer extends State {
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
+		
 		batch.begin();
 		bg.draw(batch);
-		table.draw(batch);
 		batch.end();
+		
+		p1Score.render(Color.WHITE);
+		p2Score.render(Color.WHITE);
+		
+		sr.begin(ShapeType.Filled);
+		sr.setColor(0.35f, 0.65f, 0.20f, 0.8f);
+		sr.rect((Gdx.graphics.getWidth() - 400) / 2 - 10,
+				(Gdx.graphics.getHeight() - 400) / 2 - 10, 420, 420);
+		sr.setColor(0.15f, 0.55f, 0.7f, 0.7f);
+		sr.rect((Gdx.graphics.getWidth() - 400) / 2,
+				(Gdx.graphics.getHeight() - 400) / 2, 400, 400);
+		sr.end();
 
 		for (int i = 0; i < 5; i++) {
 			for (int k = 0; k < 5; k++) {
@@ -138,17 +155,6 @@ public class Singleplayer extends State {
 				}
 			}
 		}
-	}
-
-	public void restart() {
-		for (int i = 0; i < 5; i++) {
-			for (int k = 0; k < 5; k++) {
-				maxitmap[i][k].reset();
-			}
-		}
-
-		player1.resetScore();
-		computer.resetScore();
 	}
 
 	public void greedyAI() {
@@ -201,8 +207,8 @@ public class Singleplayer extends State {
 		spointx = x;
 		spointy = y;
 
-		computer.addScore(maxitmap[x][y].getNumber());
-		computer.setTurn(false);
+		player2.addScore(maxitmap[x][y].getNumber());
+		player2.setTurn(false);
 		player1.setTurn(true);
 	}
 

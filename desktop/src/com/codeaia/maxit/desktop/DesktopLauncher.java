@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.width = 1280;
 		config.height = 720;
 		config.fullscreen = true;
+		config.samples = 4; 
 		new LwjglApplication(new Game(), config);
 	}
 }

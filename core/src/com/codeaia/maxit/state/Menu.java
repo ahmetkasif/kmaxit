@@ -28,7 +28,7 @@ public class Menu extends State {
 		color = new Color();
 
 		bg = new Sprite(new Texture(Gdx.files.internal("img/menu/menubg.png")));
-		text = new Text("Powered by LibGDX!", Gdx.graphics.getWidth() - 200, 150);
+		text = new Text("Powered by LibGDX!", Gdx.graphics.getWidth() * 2 / 3, 100);
 		
 		play = new Button("Play", Game.width / 64,
 				Game.height / 4);
