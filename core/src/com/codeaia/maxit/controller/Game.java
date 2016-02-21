@@ -2,6 +2,7 @@ package com.codeaia.maxit.controller;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,17 +12,28 @@ import com.codeaia.maxit.ui.Text;
 
 public class Game extends ApplicationAdapter {
 
-	public static final float width = 1280;
-	public static final float height = 720;
+	public static float width = 1280;
+	public static float height = 720;
 	public static int state;
 	public static float mX, mY, delta;
 	private Music music;
+	public Preferences preferences;
 
-	public static State menu, singleplayer, options, credits;
+	public static State menu, singleplayer, help, options, credits;
 	private Text fps;
 
 	@Override
 	public void create() {
+		preferences = Gdx.app.getPreferences("kmaxit settings");
+		if (preferences.getBoolean("firstrun")) {
+			preferences.putBoolean("firstrun", false);
+			preferences.putBoolean("fullscreen", true);
+			preferences.putBoolean("vsync", false);
+			preferences.putInteger("sampling", 0);
+			preferences.putInteger("width", 1280);
+			preferences.putInteger("height", 720);
+		}
+
 		fps = new Text("Fps : " + Gdx.graphics.getDeltaTime(), 10,
 				Gdx.graphics.getHeight() - 50);
 
@@ -51,10 +63,14 @@ public class Game extends ApplicationAdapter {
 				singleplayer.update(mX, mY, delta);
 			}
 		} else if (state == 3) {
+			if (!help.equals(null)) {
+				help.update(mX, mY, delta);
+			}
+		} else if (state == 4) {
 			if (!options.equals(null)) {
 				options.update(mX, mY, delta);
 			}
-		} else if (state == 4) {
+		} else if (state == 5) {
 			if (!credits.equals(null)) {
 				credits.update(mX, mY, delta);
 			}
@@ -83,10 +99,14 @@ public class Game extends ApplicationAdapter {
 				singleplayer.render(mX, mY);
 			}
 		} else if (state == 3) {
+			if (!help.equals(null)) {
+				help.render(mX, mY);
+			}
+		} else if (state == 4) {
 			if (!options.equals(null)) {
 				options.render(mX, mY);
 			}
-		} else if (state == 4) {
+		} else if (state == 5) {
 			if (!credits.equals(null)) {
 				credits.render(mX, mY);
 			}

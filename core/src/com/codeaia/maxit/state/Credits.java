@@ -6,16 +6,26 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codeaia.maxit.controller.Game;
+import com.codeaia.maxit.ui.Button;
 import com.codeaia.maxit.ui.Text;
 
 public class Credits extends State {
 	private Text brand, titleDev, titleGfx, titleAlg, dev1, dev2, dev3, dev4, dev5, gfx1, alg1, alg2, footBrand;
 	private Sprite kitten;
 	private float x;
+	private Button menu;
 
 	public Credits(int id) {
 		super(id);
 		create();
+		
+	}
+
+	@Override
+	public void create() {
+		super.create();
+		
+		menu = new Button("Menu", Game.width / 64, Game.height * 1/ 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		
 		x = 0;
 
@@ -39,12 +49,6 @@ public class Credits extends State {
 		kitten.setPosition(Gdx.graphics.getWidth() / 2 - 40 - kitten.getWidth() / 2, Gdx.graphics.getHeight() / 2 - x - 330 - kitten.getHeight());
 		
 		footBrand = new Text("Kitten Maxit - Plus v1.1 / Feb 2016", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 360 - kitten.getHeight());
-		
-	}
-
-	@Override
-	public void create() {
-		super.create();
 	}
 
 	@Override
@@ -52,6 +56,24 @@ public class Credits extends State {
 		super.update(mX, mY, delta);
 		
 		x += delta * 120;
+		
+		if(menu.isClicked(mX, mY)){
+			Game.menu = new Menu(1);
+			Game.state = 1;
+			if (Game.singleplayer != null) {
+				Game.singleplayer.destroy();
+			}
+			if (Game.options != null) {
+				Game.options.destroy();
+			}
+			if (Game.help != null) {
+				Game.help.destroy();
+			}
+			if (Game.credits != null) {
+				Game.credits.destroy();
+			}
+			menu.playSound();
+		}
 		
 		if(x  > 900){
 			x = - Gdx.graphics.getHeight() / 2;
@@ -110,6 +132,8 @@ public class Credits extends State {
 		titleAlg.render(Color.CYAN);
 		alg1.render(Color.WHITE);
 		alg2.render(Color.WHITE);
+		
+		menu.render(mX, mY);
 		
 		batch.begin();
 		kitten.draw(batch);

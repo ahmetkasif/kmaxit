@@ -12,12 +12,17 @@ public class Button {
 	private ShapeRenderer sr;
 	private Text text;
 	private Sound clickSound;
+	private Color bgColor, textColor, hoverColor, borderColor;
 	private float x, y;
 	
-	public Button(String value, float x, float y){
+	public Button(String value, float x, float y, Color bgColor, Color textColor, Color hoverColor, Color borderColor){
 		text = new Text(value, x, y);
 		setX(x);
 		setY(y);
+		setBgColor(bgColor);
+		setTextColor(textColor);
+		setBorderColor(borderColor);
+		setHoverColor(hoverColor);
 		
 		sr = new ShapeRenderer();
 		batch = new SpriteBatch();
@@ -38,19 +43,19 @@ public class Button {
 		if(!isHovered(mX, mY)){
 			batch.begin();
 			sr.begin(ShapeType.Line);
-			sr.setColor(Color.BLACK);
+			sr.setColor(borderColor);
 			sr.rect(x, y, 100, text.getHeight());
 			sr.end();
 			batch.end();
-			text.render(Color.WHITE);
+			text.render(textColor);
 		} else{
 			batch.begin();
 			sr.begin(ShapeType.Line);
-			sr.setColor(Color.BLACK);
+			sr.setColor(hoverColor);
 			sr.rect(x, y, 100, text.getHeight());
 			sr.end();
 			batch.end();
-			text.render(Color.CYAN);
+			text.render(hoverColor);
 		}
 	}
 	
@@ -78,11 +83,43 @@ public class Button {
 		this.y = y;
 	}
 
+	public Color getBgColor() {
+		return bgColor;
+	}
+
+	public void setBgColor(Color bgColor) {
+		this.bgColor = bgColor;
+	}
+
+	public Color getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(Color textColor) {
+		this.textColor = textColor;
+	}
+
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
+	}
+
+	public Color getHoverColor() {
+		return hoverColor;
+	}
+
+	public void setHoverColor(Color hoverColor) {
+		this.hoverColor = hoverColor;
+	}
+
 	public void destroy() {
 		try {
 			this.finalize();
 		} catch (Throwable e) {
-			System.out.println("Button object couldn't be finalized");
+			Gdx.app.log("Button", "Button finalization error", e);
 			e.printStackTrace();
 		}
 	}

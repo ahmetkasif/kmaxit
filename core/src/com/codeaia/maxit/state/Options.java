@@ -2,6 +2,7 @@ package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codeaia.maxit.controller.Game;
@@ -9,8 +10,8 @@ import com.codeaia.maxit.ui.Button;
 
 public class Options extends State {
 	private Sprite bg;
-	private Button graphics, audio; 
-	private int layer, state;
+	private Button menu, graphics, audio; 
+	private int layer;
 	
 	public Options(int id) {
 		super(id);
@@ -22,20 +23,19 @@ public class Options extends State {
 		super.create();
 		bg = new Sprite(new Texture(	Gdx.files.internal("img/optionsbg.png")));
 		
-		graphics = new Button("Graphics", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 + 64);
-		audio = new Button("Audio", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - 64);
+		menu = new Button("Menu", Game.width / 64, Game.height * 1/ 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		
-		
+		graphics = new Button("Graphics", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 + 64, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		audio = new Button("Audio", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - 64, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		
 		layer = 0;
-		state = 0;
 	}
 
 	@Override
 	public void update(float mX, float mY, float delta) {
 		super.update(mX, mY, delta);
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+		
+		if(menu.isClicked(mX, mY)){
 			Game.menu = new Menu(1);
 			Game.state = 1;
 			if (Game.singleplayer != null) {
@@ -44,18 +44,48 @@ public class Options extends State {
 			if (Game.options != null) {
 				Game.options.destroy();
 			}
+			if (Game.help != null) {
+				Game.help.destroy();
+			}
 			if (Game.credits != null) {
 				Game.credits.destroy();
 			}
-		}
-		
-		if(graphics.isClicked(mX, mY)){
-			layer = 1;
+			menu.playSound();
 		}
 
-		if(audio.isClicked(mX, mY)){
-			layer = 2;
+		if(layer == 0){
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				Game.menu = new Menu(1);
+				Game.state = 1;
+				if (Game.singleplayer != null) {
+					Game.singleplayer.destroy();
+				}
+				if (Game.options != null) {
+					Game.options.destroy();
+				}
+				if (Game.credits != null) {
+					Game.credits.destroy();
+				}
+			}
+			if(graphics.isClicked(mX, mY)){
+				layer = 1;
+			}
+
+			if(audio.isClicked(mX, mY)){
+				layer = 2;
+			}
+		} else if(layer == 1){
+			
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				layer = 0;
+			}
+		} else if(layer == 2){
+			
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				layer = 0;
+			}
 		}
+		
 		
 		
 	}
@@ -66,6 +96,8 @@ public class Options extends State {
 		batch.begin();
 		bg.draw(batch);
 		batch.end();
+		
+		menu.render(mX, mY);
 		
 		if(layer == 0){
 			graphics.render(mX, mY);

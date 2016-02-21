@@ -11,7 +11,7 @@ import com.codeaia.maxit.ui.Text;
 
 public class Menu extends State {
 	private Sprite bg;
-	private Button play, options, credits, exit;
+	private Button play, help, options, credits, exit;
 	private Text text;
 	private Color color;
 	private int count = 0;
@@ -31,13 +31,15 @@ public class Menu extends State {
 		text = new Text("Powered by LibGDX!", Gdx.graphics.getWidth() * 2 / 3, 100);
 		
 		play = new Button("Play", Game.width / 64,
-				Game.height / 4);
+				Game.height * 5 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		help = new Button("How To Play", Game.width / 64,
+				Game.height / 4, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		options = new Button("Options", Game.width / 64,
-				Game.height * 3 / 16);
+				Game.height * 3 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		credits = new Button("Credits", Game.width / 64,
-				Game.height * 2 / 16);
+				Game.height * 2 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		exit = new Button("Exit", Game.width / 64,
-				Game.height * 1 / 16);
+				Game.height * 1 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 	}
 
 	@Override
@@ -80,6 +82,9 @@ public class Menu extends State {
 			if (Game.menu != null) {
 				Game.menu.destroy();
 			}
+			if(Game.help != null){
+				Game.help.destroy();
+			}
 			if (Game.options != null) {
 				Game.options.destroy();
 			}
@@ -88,10 +93,28 @@ public class Menu extends State {
 			}
 			play.playSound();
 		}
+		
+		if(help.isClicked(mX, mY)){
+			Game.state = 3;
+			Game.help = new Help(3);
+			if (Game.menu != null) {
+				Game.menu.destroy();
+			}
+			if (Game.singleplayer != null) {
+				Game.singleplayer.destroy();
+			}
+			if(Game.options != null){
+				Game.options.destroy();
+			}
+			if (Game.credits != null) {
+				Game.credits.destroy();
+			}
+			help.playSound();
+		}
 
 		if (options.isClicked(mX, mY)) {
-			Game.state = 3;
-			Game.options = new Options(3);
+			Game.state = 4;
+			Game.options = new Options(4);
 			if (Game.menu != null) {
 				Game.menu.destroy();
 			}
@@ -105,8 +128,8 @@ public class Menu extends State {
 		}
 
 		if (credits.isClicked(mX, mY)) {
-			Game.state = 4;
-			Game.credits = new Credits(4);
+			Game.state = 5;
+			Game.credits = new Credits(5);
 			if (Game.menu != null) {
 				Game.menu.destroy();
 			}
@@ -135,6 +158,7 @@ public class Menu extends State {
 		batch.end();
 
 		play.render(mX, mY);
+		help.render(mX, mY);
 		options.render(mX, mY);
 		credits.render(mX, mY);
 		exit.render(mX, mY);

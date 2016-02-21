@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.objects.Number;
 import com.codeaia.maxit.objects.Player;
+import com.codeaia.maxit.ui.Button;
 import com.codeaia.maxit.ui.Text;
 
 public class Singleplayer extends State {
@@ -21,6 +22,7 @@ public class Singleplayer extends State {
 	private Number[][] maxitmap = new Number[5][5];
 	private int spointx, spointy;
 	private Text p1Score, p2Score;
+	private Button menu;
 
 	public Singleplayer(int id) {
 		super(id);
@@ -45,6 +47,8 @@ public class Singleplayer extends State {
 						+ i * 74 - 10, k * 74 + 200);
 			}
 		}
+		
+		menu = new Button("Menu", Game.width / 64, Game.height * 1/ 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 
 		spointx = (new Random()).nextInt(5);
 		spointy = (new Random()).nextInt(5);
@@ -68,6 +72,24 @@ public class Singleplayer extends State {
 			if (Game.credits != null) {
 				Game.credits.destroy();
 			}
+		}
+		
+		if(menu.isClicked(mX, mY)){
+			Game.menu = new Menu(1);
+			Game.state = 1;
+			if (Game.singleplayer != null) {
+				Game.singleplayer.destroy();
+			}
+			if (Game.options != null) {
+				Game.options.destroy();
+			}
+			if (Game.help != null) {
+				Game.help.destroy();
+			}
+			if (Game.credits != null) {
+				Game.credits.destroy();
+			}
+			menu.playSound();
 		}
 		
 		p1Score.setText(player1.getName() + ": " + player1.getScore());
@@ -130,6 +152,7 @@ public class Singleplayer extends State {
 				maxitmap[i][k].draw();
 			}
 		}
+		menu.render(mX, mY);
 	}
 
 	public void markSelectable(int spointx, int spointy) {
