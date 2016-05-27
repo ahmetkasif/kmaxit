@@ -3,35 +3,46 @@ package com.codeaia.maxit.objects;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.codeaia.maxit.ui.Text;
+import com.codeaia.maxit.state.Singleplayer;
+import com.codeaia.maxit.ui.Button;
 
 public class Number {
-	private ShapeRenderer sr;
-	private Text text;
-	
+	public Button button;
 	private Random random;
 	private int number;
 	private int x, y;
 	private int state;
 
 	public Number(int x, int y) {
-		sr = new ShapeRenderer();
-
 		random = new Random();
-		number = random.nextInt() % 25;
-		
-		if(number < 0){
-			text = new Text("" + number, x + 10, y + 20);
-		}else if(number >= 0 && number < 10){
-			text = new Text("" + number, x + 14, y + 20);
-		} else if(number >= 10){
-			text = new Text("" + number, x + 12, y + 20);
-		}
-		
+		number = random.nextInt() % (Singleplayer.mapSize * Singleplayer.mapSize);
+
+		button = new Button("" + number, x, y, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		button.setWidth(64);
+		button.setHeight(64);
+		button.text.setY(button.text.getY() + 20);
+
 		this.x = x;
 		this.y = y;
+
+		if (number < 0) {
+			button.text.setX(button.text.getX() + 10);
+		} else if (number >= 0 && number < 10) {
+			button.text.setX(button.text.getX() + 16);
+		} else if (number >= 10) {
+			button.text.setX(button.text.getX() + 12);
+		}
+	}
+
+	public void setY(int y) {
+		this.y = y;
+
+	}
+
+	public void setX(int x) {
+		this.x = x;
 	}
 
 	public int getNumber() {
@@ -60,42 +71,30 @@ public class Number {
 		}
 	}
 
-	public boolean inbound(float mouseX, float  mouseY) {
-		if (mouseX > x && mouseX < x + 64 && mouseY > y
-				&& mouseY < y + 64) {
+	public boolean inbound(float mouseX, float mouseY) {
+		if (mouseX > x && mouseX < x + 64 && mouseY > y && mouseY < y + 64) {
 			return true;
 		}
 		return false;
 	}
 
-	public void draw() {
+	public void draw(float mX, float mY, SpriteBatch batch, ShapeRenderer sr) {
+		button.render(mX, mY, batch, sr);
+
 		switch (state) {
 		case 0:
-			sr.begin(ShapeType.Filled);
-			sr.setColor(Color.WHITE);
-			sr.rect(x, y, 64, 64);
- 			sr.end();
+			button.renderCustom(mX, mY, batch, sr, Color.WHITE);
 			break;
 		case 1:
-			sr.begin(ShapeType.Filled);
-			sr.setColor(Color.FOREST);
-			sr.rect(x, y, 64, 64);
- 			sr.end();
+			button.renderCustom(mX, mY, batch, sr, Color.FOREST);
 			break;
 		case 2:
-			sr.begin(ShapeType.Filled);
-			sr.setColor(Color.FIREBRICK);
-			sr.rect(x, y, 64, 64);
- 			sr.end();
- 			// TODO flashy animation
+			button.renderCustom(mX, mY, batch, sr, Color.FIREBRICK);
+			// TODO flashy animation
 			break;
 		case 3:
-			sr.begin(ShapeType.Filled);
-			sr.setColor(Color.GRAY);
-			sr.rect(x, y, 64, 64);
- 			sr.end();
+			button.renderCustom(mX, mY, batch, sr, Color.GRAY);
 			break;
 		}
-		text.render(Color.BLACK);
 	}
 }

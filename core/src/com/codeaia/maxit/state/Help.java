@@ -79,11 +79,12 @@ public class Help extends State {
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
-		menu.render(mX, mY);
-		hint1.render(Color.WHITE);
-		hint2.render(Color.WHITE);
-		hint3.render(Color.WHITE);
-		hint4.render(Color.WHITE);
+		fps.render(Color.WHITE, batch, sr);
+		menu.render(mX, mY, batch, sr);
+		hint1.render(Color.WHITE, batch, sr);
+		hint2.render(Color.WHITE, batch, sr);
+		hint3.render(Color.WHITE, batch, sr);
+		hint4.render(Color.WHITE, batch, sr);
 	}
 
 	@Override

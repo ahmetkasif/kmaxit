@@ -8,65 +8,86 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Button {
-	private SpriteBatch batch;
-	private ShapeRenderer sr;
-	private Text text;
+	public Text text;
 	private Sound clickSound;
 	private Color bgColor, textColor, hoverColor, borderColor;
-	private float x, y;
-	
-	public Button(String value, float x, float y, Color bgColor, Color textColor, Color hoverColor, Color borderColor){
-		text = new Text(value, x, y);
+	private float x, y, width, height;
+	private int offset = 11;
+
+	public Button(String value, float x, float y, Color bgColor, Color textColor, Color hoverColor, Color borderColor) {
 		setX(x);
 		setY(y);
+		text = new Text(value, x + offset, y + 2 * offset);
+		setWidth((2 * offset) + text.getWidth());
+		setHeight(text.getHeight() + (2 * offset));
+
 		setBgColor(bgColor);
 		setTextColor(textColor);
 		setBorderColor(borderColor);
 		setHoverColor(hoverColor);
-		
-		sr = new ShapeRenderer();
-		batch = new SpriteBatch();
+
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("sound/clicksound.wav"));
 	}
-	
-	public boolean isClicked(float mX, float mY){
-		if(isHovered(mX, mY) && Gdx.input.justTouched()){
+
+	public boolean isClicked(float mX, float mY) {
+		if (isHovered(mX, mY) && Gdx.input.justTouched()) {
 			return true;
-		} return false;
+		}
+		return false;
 	}
-	
-	public void playSound(){
+
+	public void playSound() {
 		clickSound.play();
 	}
-	
-	public void render(float mX, float mY){
-		if(!isHovered(mX, mY)){
+
+	public void render(float mX, float mY, SpriteBatch batch, ShapeRenderer sr) {
+		if (!isHovered(mX, mY)) {
 			batch.begin();
 			sr.begin(ShapeType.Line);
 			sr.setColor(borderColor);
-			sr.rect(x, y, 100, text.getHeight());
+			sr.rect(x, y, width, height);
 			sr.end();
 			batch.end();
-			text.render(textColor);
-		} else{
+			text.render(textColor, batch, sr);
+		} else {
 			batch.begin();
 			sr.begin(ShapeType.Line);
 			sr.setColor(hoverColor);
-			sr.rect(x, y, 100, text.getHeight());
+			sr.rect(x, y, width, height);
 			sr.end();
 			batch.end();
-			text.render(hoverColor);
+			text.render(hoverColor, batch, sr);
 		}
 	}
 	
-	public Boolean isHovered(float mX, float mY){
-		if(mX > x && mX < x + 100 && mY > y && mY < y + text.getHeight()){
+	public void renderCustom(float mX, float mY, SpriteBatch batch, ShapeRenderer sr, Color color) {
+		if (!isHovered(mX, mY)) {
+			batch.begin();
+			sr.begin(ShapeType.Filled);
+			sr.setColor(color);
+			sr.rect(x, y, width, height);
+			sr.end();
+			batch.end();
+			text.render(textColor, batch, sr);
+		} else {
+			batch.begin();
+			sr.begin(ShapeType.Filled);
+			sr.setColor(color);
+			sr.rect(x, y, width, height);
+			sr.end();
+			batch.end();
+			text.render(hoverColor, batch, sr);
+		}
+	}
+
+	public Boolean isHovered(float mX, float mY) {
+		if (mX > x && mX < x + width && mY > y && mY < y + height) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
-	
+
 	public float getX() {
 		return x;
 	}
@@ -122,6 +143,30 @@ public class Button {
 			Gdx.app.log("Button", "Button finalization error", e);
 			e.printStackTrace();
 		}
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 }

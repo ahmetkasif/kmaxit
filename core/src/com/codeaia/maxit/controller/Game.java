@@ -4,44 +4,31 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.codeaia.maxit.state.Menu;
 import com.codeaia.maxit.state.State;
-import com.codeaia.maxit.ui.Text;
 
 public class Game extends ApplicationAdapter {
 
 	public static float width = 1280;
 	public static float height = 720;
+	public static float scale = 1;
 	public static int state;
 	public static float mX, mY, delta;
 	private Music music;
 	public Preferences preferences;
 
 	public static State menu, singleplayer, help, options, credits;
-	private Text fps;
 
 	@Override
 	public void create() {
 		preferences = Gdx.app.getPreferences("kmaxit settings");
-		if (preferences.getBoolean("firstrun")) {
-			preferences.putBoolean("firstrun", false);
-			preferences.putBoolean("fullscreen", true);
-			preferences.putBoolean("vsync", false);
-			preferences.putInteger("sampling", 0);
-			preferences.putInteger("width", 1280);
-			preferences.putInteger("height", 720);
-		}
-
-		fps = new Text("Fps : " + Gdx.graphics.getDeltaTime(), 10,
-				Gdx.graphics.getHeight() - 50);
-
+		
 		mX = 0;
 		mY = 0;
 		delta = 0;
 
-		music = Gdx.audio.newMusic(Gdx.files.internal("sound/iloveyouso.ogg"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("sound/maintheme.ogg"));
 		music.setVolume(0.4f);
 		music.play();
 
@@ -75,9 +62,6 @@ public class Game extends ApplicationAdapter {
 				credits.update(mX, mY, delta);
 			}
 		}
-
-		fps.setText("FPS : " + (int) (1 / Gdx.graphics.getRawDeltaTime()));
-
 	}
 
 	@Override
@@ -85,9 +69,9 @@ public class Game extends ApplicationAdapter {
 		update();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT
-				| GL20.GL_DEPTH_BUFFER_BIT
-				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
+		Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT
+				| GL30.GL_DEPTH_BUFFER_BIT
+				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL30.GL_COVERAGE_BUFFER_BIT_NV
 						: 0));
 
 		if (state == 1) {
@@ -111,8 +95,16 @@ public class Game extends ApplicationAdapter {
 				credits.render(mX, mY);
 			}
 		}
-
-		fps.render(Color.WHITE);
+	}
+	
+	@Override
+	public void resize(int width, int height){
+		Game.width = width;
+		Game.height = height;
+		if((1280 / width) / (720 / height) == 16 / 9){
+			scale = width / 1280;
+			System.out.println("yes!");
+		}
 	}
 
 	@Override

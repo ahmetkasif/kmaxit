@@ -32,20 +32,20 @@ public class Credits extends State {
 		brand = new Text("Kitten Maxit: Plus", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x);
 		
 		titleDev = new Text("Developers:", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 40);
-		dev1 = new Text("Abdullah Ögük", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 70);
+		dev1 = new Text("Abdullah Oguk", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 70);
 		dev2 = new Text("Ahmet Kasif", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 90);
 		dev3 = new Text("Hilmi Araz", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 110);
-		dev4 = new Text("Mustafa Özdemir", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 130);
+		dev4 = new Text("Mustafa Ozdemir", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 130);
 		dev5 = new Text("Ugur Kafali", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 150);
 		
 		titleGfx = new Text("Graphics and UI Design", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 190);
 		gfx1 = new Text("Ahmet Kasif", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 220);
 		
 		titleAlg = new Text("AI", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 260);
-		alg1 = new Text("Abdullah Ögük", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 290);
+		alg1 = new Text("Abdullah Oguk", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 290);
 		alg2 = new Text("Ahmet Kasif", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 310);
 		
-		kitten = new Sprite(new Texture(Gdx.files.internal("img/kcode.png")));
+		kitten = new Sprite(new Texture(Gdx.files.internal("img/codeaia.png")));
 		kitten.setPosition(Gdx.graphics.getWidth() / 2 - 40 - kitten.getWidth() / 2, Gdx.graphics.getHeight() / 2 - x - 330 - kitten.getHeight());
 		
 		footBrand = new Text("Kitten Maxit - Plus v1.1 / Feb 2016", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 360 - kitten.getHeight());
@@ -117,29 +117,32 @@ public class Credits extends State {
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
-		brand.render(Color.RED);
 		
-		titleDev.render(Color.CYAN);
-		dev1.render(Color.WHITE);
-		dev2.render(Color.WHITE);
-		dev3.render(Color.WHITE);
-		dev4.render(Color.WHITE);
-		dev5.render(Color.WHITE);
+		fps.render(Color.WHITE, batch, sr);
 		
-		titleGfx.render(Color.CYAN);
-		gfx1.render(Color.WHITE);
+		brand.render(Color.RED, batch, sr);
 		
-		titleAlg.render(Color.CYAN);
-		alg1.render(Color.WHITE);
-		alg2.render(Color.WHITE);
+		titleDev.render(Color.CYAN, batch, sr);
+		dev1.render(Color.WHITE, batch, sr);
+		dev2.render(Color.WHITE, batch, sr);
+		dev3.render(Color.WHITE, batch, sr);
+		dev4.render(Color.WHITE, batch, sr);
+		dev5.render(Color.WHITE, batch, sr);
 		
-		menu.render(mX, mY);
+		titleGfx.render(Color.CYAN, batch, sr);
+		gfx1.render(Color.WHITE, batch, sr);
+		
+		titleAlg.render(Color.CYAN, batch, sr);
+		alg1.render(Color.WHITE, batch, sr);
+		alg2.render(Color.WHITE, batch, sr);
+		
+		menu.render(mX, mY, batch, sr);
 		
 		batch.begin();
 		kitten.draw(batch);
 		batch.end();
 	
-		footBrand.render(Color.LIGHT_GRAY);
+		footBrand.render(Color.LIGHT_GRAY, batch, sr);
 	}
 
 	@Override

@@ -24,7 +24,6 @@ public class Menu extends State {
 	@Override
 	public void create() {
 		super.create();
-		
 		color = new Color();
 
 		bg = new Sprite(new Texture(Gdx.files.internal("img/menu/menubg.png")));
@@ -157,13 +156,14 @@ public class Menu extends State {
 		bg.draw(batch);
 		batch.end();
 
-		play.render(mX, mY);
-		help.render(mX, mY);
-		options.render(mX, mY);
-		credits.render(mX, mY);
-		exit.render(mX, mY);
-
-		text.render(color);
+		fps.render(Color.WHITE, batch, sr);
+		
+		play.render(mX, mY, batch, sr);
+		help.render(mX, mY, batch, sr);
+		options.render(mX, mY, batch, sr);
+		credits.render(mX, mY, batch, sr);
+		exit.render(mX, mY, batch, sr);
+		text.render(color, batch, sr);
 		
 	}
 

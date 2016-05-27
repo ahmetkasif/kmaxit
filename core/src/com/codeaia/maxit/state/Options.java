@@ -23,10 +23,10 @@ public class Options extends State {
 		super.create();
 		bg = new Sprite(new Texture(	Gdx.files.internal("img/optionsbg.png")));
 		
-		menu = new Button("Menu", Game.width / 64, Game.height * 1/ 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		menu = new Button("Menu", 32, 36, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		
-		graphics = new Button("Graphics", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 + 64, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
-		audio = new Button("Audio", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - 64, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		graphics = new Button("Graphics", 32, 108, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		audio = new Button("Audio", 32, 144, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
 		
 		layer = 0;
 	}
@@ -97,11 +97,13 @@ public class Options extends State {
 		bg.draw(batch);
 		batch.end();
 		
-		menu.render(mX, mY);
+		fps.render(Color.WHITE, batch, sr);
+		
+		menu.render(mX, mY, batch, sr);
 		
 		if(layer == 0){
-			graphics.render(mX, mY);
-			audio.render(mX, mY);
+			graphics.render(mX, mY, batch, sr);
+			audio.render(mX, mY, batch, sr);
 		} else if(layer == 1){
 			// TODO graphics preferences
 		} else if(layer == 2){

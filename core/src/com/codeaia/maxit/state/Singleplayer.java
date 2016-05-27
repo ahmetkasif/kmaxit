@@ -17,12 +17,13 @@ import com.codeaia.maxit.ui.Text;
 
 public class Singleplayer extends State {
 	private Sprite bg;
-	private ShapeRenderer sr;
+	public static int mapSize;
 	private Player player1, player2;
-	private Number[][] maxitmap = new Number[5][5];
+	private Number[][] maxitmap = new Number[7][7];
 	private int spointx, spointy;
 	private Text p1Score, p2Score;
-	private Button menu;
+	private Button menu, reset;
+	private boolean turn;
 
 	public Singleplayer(int id) {
 		super(id);
@@ -32,23 +33,30 @@ public class Singleplayer extends State {
 	@Override
 	public void create() {
 		super.create();
+		mapSize = 7;
 		bg = new Sprite(new Texture(Gdx.files.internal("img/play/playbg.png")));
 		sr = new ShapeRenderer();
 
-		player1 = new Player("You", true);
-		player2 = new Player("Computer (Easy)", false);
-		
-		p1Score = new Text(player1.getName() + ": " + player1.getScore(), 50, Gdx.graphics.getHeight() * 3 / 4);
-		p2Score = new Text(player2.getName() + ": " + player2.getScore(), Gdx.graphics.getWidth() - 50 - (player2.getName().length() + 5) * 8, Gdx.graphics.getHeight() * 3 / 4);
+		player1 = new Player("You");
+		player2 = new Player("Computer (Easy)");
 
-		for (int i = 0; i < 5; i++) {
-			for (int k = 0; k < 5; k++) {
-				maxitmap[i][k] = new Number(((int) Game.width / 2) - (64 * 2)
-						+ i * 74 - 10, k * 74 + 200);
+		turn = true;
+
+		p1Score = new Text(player1.getName() + ": " + player1.getScore(), 50, Gdx.graphics.getHeight() * 3 / 4);
+		p2Score = new Text(player2.getName() + ": " + player2.getScore(),
+				Gdx.graphics.getWidth() - 50 - (player2.getName().length() + 5) * 8, Gdx.graphics.getHeight() * 3 / 4);
+
+		for (int i = 0; i < mapSize; i++) {
+			for (int k = 0; k < mapSize; k++) {
+				maxitmap[i][k] = new Number((1280 - (72 * mapSize + 24)) / 2 + i * 72 + 16,
+						(720 - (72 * mapSize + 24)) / 2 + k * 72 + 16);
 			}
 		}
-		
-		menu = new Button("Menu", Game.width / 64, Game.height * 1/ 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+
+		menu = new Button("Menu", 32, 36, Color.BLACK, Color.WHITE, Color.CYAN,
+				Color.BLACK);
+		reset = new Button("Reset", 32, 72, Color.BLACK, Color.WHITE, Color.CYAN,
+				Color.BLACK);
 
 		spointx = (new Random()).nextInt(5);
 		spointy = (new Random()).nextInt(5);
@@ -73,8 +81,8 @@ public class Singleplayer extends State {
 				Game.credits.destroy();
 			}
 		}
-		
-		if(menu.isClicked(mX, mY)){
+
+		if (menu.isClicked(mX, mY)) {
 			Game.menu = new Menu(1);
 			Game.state = 1;
 			if (Game.singleplayer != null) {
@@ -92,27 +100,49 @@ public class Singleplayer extends State {
 			menu.playSound();
 		}
 		
+		if (reset.isClicked(mX, mY)) {
+			Game.singleplayer = new Singleplayer(2);
+			Game.state = 2;
+			if (Game.menu != null) {
+				Game.menu.destroy();
+			}
+			if (Game.options != null) {
+				Game.options.destroy();
+			}
+			if (Game.help != null) {
+				Game.help.destroy();
+			}
+			if (Game.credits != null) {
+				Game.credits.destroy();
+			}
+			menu.playSound();
+		}
+
 		p1Score.setText(player1.getName() + ": " + player1.getScore());
+		p1Score.setBackgroundColor(Color.DARK_GRAY);
 		p2Score.setText(player2.getName() + ": " + player2.getScore());
+		p2Score.setBackgroundColor(Color.DARK_GRAY);
 
 		markSelectable(spointx, spointy);
 
-		if (player1.getTurn() && !player2.getTurn()) {
-			for (int i = 0; i < 5; i++) {
-				for (int k = 0; k < 5; k++) {
+		if (turn) {
+			for (int i = 0; i < mapSize; i++) {
+				for (int k = 0; k < mapSize; k++) {
 					if (maxitmap[i][k].getState() == 1) {
 						if (maxitmap[i][k].inbound(mX, mY)) {
 							maxitmap[i][k].setState(2);
 							if (Gdx.input.isTouched()) {
 								undoSelectable(spointx, spointy);
 								maxitmap[i][k].setState(3);
-
+								maxitmap[i][k].button.playSound();
 								spointx = i;
 								spointy = k;
+								System.out.println(
+										maxitmap[i][k].getNumber() + "points to the player, its new score is : "
+												+ player1.getScore() + maxitmap[i][k].getNumber());
 
 								player1.addScore(maxitmap[i][k].getNumber());
-								player1.setTurn(false);
-								player2.setTurn(true);
+								turn = false;
 							}
 						} else {
 							maxitmap[i][k].setState(1);
@@ -120,9 +150,7 @@ public class Singleplayer extends State {
 					}
 				}
 			}
-		}
-
-		if (!player1.getTurn() && player2.getTurn()) {
+		} else {
 			greedyAI();
 		}
 	}
@@ -130,38 +158,38 @@ public class Singleplayer extends State {
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
-		
+
+		fps.render(Color.WHITE, batch, sr);
+
 		batch.begin();
 		bg.draw(batch);
 		batch.end();
-		
-		p1Score.render(Color.WHITE);
-		p2Score.render(Color.WHITE);
-		
+
+		p1Score.render(Color.WHITE, batch, sr);
+		p2Score.render(Color.WHITE, batch, sr);
+
 		sr.begin(ShapeType.Filled);
-		sr.setColor(0.35f, 0.65f, 0.20f, 0.8f);
-		sr.rect((Gdx.graphics.getWidth() - 400) / 2 - 10,
-				(Gdx.graphics.getHeight() - 400) / 2 - 10, 420, 420);
-		sr.setColor(0.15f, 0.55f, 0.7f, 0.7f);
-		sr.rect((Gdx.graphics.getWidth() - 400) / 2,
-				(Gdx.graphics.getHeight() - 400) / 2, 400, 400);
+		sr.setColor(0.90f, 0.90f, 0.90f, 1f);
+		sr.rect((1280 - (72 * mapSize + 24)) / 2, (720 - (72 * mapSize + 24)) / 2, 72 * mapSize + 24,
+				72 * mapSize + 24);
 		sr.end();
 
-		for (int i = 0; i < 5; i++) {
-			for (int k = 0; k < 5; k++) {
-				maxitmap[i][k].draw();
+		for (int i = 0; i < mapSize; i++) {
+			for (int k = 0; k < mapSize; k++) {
+				maxitmap[i][k].draw(mX, mY, batch, sr);
 			}
 		}
-		menu.render(mX, mY);
+		menu.render(mX, mY, batch, sr);
+		reset.render(mX, mY, batch, sr);
 	}
 
 	public void markSelectable(int spointx, int spointy) {
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < mapSize; i++) {
 			maxitmap[i][spointy].setState(1);
 		}
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < mapSize; i++) {
 			maxitmap[spointx][i].setState(1);
 		}
 
@@ -170,10 +198,9 @@ public class Singleplayer extends State {
 
 	public void undoSelectable(int spointx, int spointy) {
 
-		for (int i = 0; i < 5; i++) {
-			for (int k = 0; k < 5; k++) {
-				if (maxitmap[i][k].getState() == 1
-						|| maxitmap[i][k].getState() == 2) {
+		for (int i = 0; i < mapSize; i++) {
+			for (int k = 0; k < mapSize; k++) {
+				if (maxitmap[i][k].getState() == 1 || maxitmap[i][k].getState() == 2) {
 					maxitmap[i][k].setState(0);
 				}
 			}
@@ -181,12 +208,11 @@ public class Singleplayer extends State {
 	}
 
 	public void greedyAI() {
-		int maxvalue = -25;
+		int maxvalue = -(mapSize * mapSize);
 		int x = 0, y = 0;
 
-		for (int i = spointx; i < 5; i++) {
-			if (maxitmap[i][spointy].getNumber() > maxvalue
-					&& maxitmap[i][spointy].getState() != 3) {
+		for (int i = spointx; i < mapSize; i++) {
+			if (maxitmap[i][spointy].getNumber() > maxvalue && maxitmap[i][spointy].getState() != 3) {
 				maxvalue = maxitmap[i][spointy].getNumber();
 
 				x = i;
@@ -195,8 +221,7 @@ public class Singleplayer extends State {
 		}
 
 		for (int i = 0; i < spointx; i++) {
-			if (maxitmap[i][spointy].getNumber() > maxvalue
-					&& maxitmap[i][spointy].getState() != 3) {
+			if (maxitmap[i][spointy].getNumber() > maxvalue && maxitmap[i][spointy].getState() != 3) {
 				maxvalue = maxitmap[i][spointy].getNumber();
 
 				x = i;
@@ -204,9 +229,8 @@ public class Singleplayer extends State {
 			}
 		}
 
-		for (int k = spointy; k < 5; k++) {
-			if (maxitmap[spointx][k].getNumber() > maxvalue
-					&& maxitmap[spointx][k].getState() != 3) {
+		for (int k = spointy; k < mapSize; k++) {
+			if (maxitmap[spointx][k].getNumber() > maxvalue && maxitmap[spointx][k].getState() != 3) {
 				maxvalue = maxitmap[spointx][k].getNumber();
 
 				x = spointx;
@@ -215,8 +239,7 @@ public class Singleplayer extends State {
 		}
 
 		for (int k = 0; k < spointy; k++) {
-			if (maxitmap[spointx][k].getNumber() > maxvalue
-					&& maxitmap[spointx][k].getState() != 3) {
+			if (maxitmap[spointx][k].getNumber() > maxvalue && maxitmap[spointx][k].getState() != 3) {
 				maxvalue = maxitmap[spointx][k].getNumber();
 
 				x = spointx;
@@ -231,8 +254,7 @@ public class Singleplayer extends State {
 		spointy = y;
 
 		player2.addScore(maxitmap[x][y].getNumber());
-		player2.setTurn(false);
-		player1.setTurn(true);
+		turn = true;
 	}
 
 	@Override

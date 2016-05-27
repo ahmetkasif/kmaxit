@@ -3,20 +3,10 @@ package com.codeaia.maxit.objects;
 public class Player {
 	private int score;
 	private String name;
-	private boolean turn;
 
-	public Player(String name, boolean turn) {
-		setScore(0);
+	public Player(String name) {
+		resetScore();
 		setName(name);
-		setTurn(turn);
-	}
-
-	public void setTurn(boolean turn) {
-		this.turn = turn;
-	}
-	
-	public boolean getTurn(){
-		return turn;
 	}
 
 	public int getScore() {
