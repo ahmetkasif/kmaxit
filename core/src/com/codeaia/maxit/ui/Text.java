@@ -34,7 +34,7 @@ public class Text {
 		if (bgColorEnabled) {
 			sr.begin(ShapeType.Filled);
 			sr.setColor(backgroundColor);
-			sr.rect(x, y, width, height);
+			//sr.rect(x, y, width, height);
 			sr.end();
 		}
 		batch.begin();

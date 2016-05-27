@@ -19,7 +19,7 @@ public class Singleplayer extends State {
 	private Sprite bg;
 	public static int mapSize;
 	private Player player1, player2;
-	private Number[][] maxitmap = new Number[7][7];
+	private Number[][] maxitmap = new Number[5][5];
 	private int spointx, spointy;
 	private Text p1Score, p2Score;
 	private Button menu, reset;
@@ -33,7 +33,7 @@ public class Singleplayer extends State {
 	@Override
 	public void create() {
 		super.create();
-		mapSize = 7;
+		mapSize = 5;
 		bg = new Sprite(new Texture(Gdx.files.internal("img/play/playbg.png")));
 		sr = new ShapeRenderer();
 
