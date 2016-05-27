@@ -2,6 +2,11 @@
 
 LibGDX kütüphanesi yardımıyla yapılmış Maxit oyunu, eğer geliştirilme sürecinde destek olmak istiyorsanız, proje eclipse'e gömülmeye hazır durumdadır. Eğer eclipse'inize gömme konusunda yardıma ihtiyaç duyuyorsanız, LibGDX'in konu hakkındaki şu yazısını okuyun : https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#packaging-for-the-desktop.
 
+Distributions klasöründen istediğiniz versiyona tıklayıp, ardından raw (çiğ) formatta göster demenizi takiben dosya inmeye başlayacaktır. İndirme konusunda sıkıntı yaşayanlar için indirme linkini de verelim :) 
+
+
+https://github.com/codeaia/KittenMaxit/raw/master/distributions/kmaxit%2B%20v1.3.jar
+
 If you want to contribute, project is ready to be imported to eclipse.
 
 **Problem**     
