@@ -37,8 +37,8 @@ for all k values starting from the last chosen point to 5 on y axis,
 ```
 
 #Screenshots
-![Maxit1](http://i.imgur.com/mifuTJm.png)
-![Maxit2](http://i.imgur.com/snSs8Z2.png)
+![Maxit1](http://i.imgur.com/3QvTDrN.png)
+![Maxit2](http://i.imgur.com/G1rezQr.png)
 
 
 
