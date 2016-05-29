@@ -13,9 +13,7 @@ public class Menu extends State {
 	private Sprite bg;
 	private Button play, help, options, credits, exit;
 	private Text text;
-	private Color color;
-	private int count = 0;
-	
+
 	public Menu(int id) {
 		super(id);
 		create();
@@ -24,21 +22,15 @@ public class Menu extends State {
 	@Override
 	public void create() {
 		super.create();
-		color = new Color();
 
 		bg = new Sprite(new Texture(Gdx.files.internal("img/menu/menubg.png")));
 		text = new Text("Powered by LibGDX!", Gdx.graphics.getWidth() * 2 / 3, 100);
-		
-		play = new Button("Play", Game.width / 64,
-				Game.height * 5 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
-		help = new Button("How To Play", Game.width / 64,
-				Game.height / 4, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
-		options = new Button("Options", Game.width / 64,
-				Game.height * 3 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
-		credits = new Button("Credits", Game.width / 64,
-				Game.height * 2 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
-		exit = new Button("Exit", Game.width / 64,
-				Game.height * 1 / 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+
+		play = new Button("Play", 32, 225);
+		help = new Button("How To Play", 32, 180);
+		options = new Button("Options", 32, 135);
+		credits = new Button("Credits", 32, 90);
+		exit = new Button("Exit", 32, 45);
 	}
 
 	@Override
@@ -48,32 +40,6 @@ public class Menu extends State {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
 		}
-		
-		switch(count % 8){
-			case 0:
-				color = new Color(200, 100, 50, 1); // red
-				count++;
-			case 1:
-				color = new Color(200, 125, 50, 1); // orange to red
-				count++;
-			case 2:
-				color = new Color(200, 150, 50, 1); // orange to yellow
-				count++;
-			case 3:
-				color = new Color(200, 175, 50, 1); // yellow to orange
-				count++;
-			case 4:
-				color = new Color(175, 175, 50, 1); // orange
-				count++;
-			case 5:
-				color = new Color(200, 175, 50, 1); // yellow to orange
-				count++;
-			case 6:
-				color = new Color(200, 150, 50, 1); // orange to yellow
-				count++;
-			case 7:
-				color = new Color(200, 125, 50, 1); // orange to red
-		}
 
 		if (play.isClicked(mX, mY)) {
 			Game.state = 2;
@@ -81,7 +47,7 @@ public class Menu extends State {
 			if (Game.menu != null) {
 				Game.menu.destroy();
 			}
-			if(Game.help != null){
+			if (Game.help != null) {
 				Game.help.destroy();
 			}
 			if (Game.options != null) {
@@ -92,8 +58,8 @@ public class Menu extends State {
 			}
 			play.playSound();
 		}
-		
-		if(help.isClicked(mX, mY)){
+
+		if (help.isClicked(mX, mY)) {
 			Game.state = 3;
 			Game.help = new Help(3);
 			if (Game.menu != null) {
@@ -102,7 +68,7 @@ public class Menu extends State {
 			if (Game.singleplayer != null) {
 				Game.singleplayer.destroy();
 			}
-			if(Game.options != null){
+			if (Game.options != null) {
 				Game.options.destroy();
 			}
 			if (Game.credits != null) {
@@ -157,14 +123,14 @@ public class Menu extends State {
 		batch.end();
 
 		fps.render(Color.WHITE, batch, sr);
-		
+
 		play.render(mX, mY, batch, sr);
 		help.render(mX, mY, batch, sr);
 		options.render(mX, mY, batch, sr);
 		credits.render(mX, mY, batch, sr);
 		exit.render(mX, mY, batch, sr);
-		text.render(color, batch, sr);
-		
+		text.render(Color.WHITE, batch, sr);
+
 	}
 
 	@Override

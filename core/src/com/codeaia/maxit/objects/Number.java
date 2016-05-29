@@ -19,7 +19,7 @@ public class Number {
 		random = new Random();
 		number = random.nextInt() % (Singleplayer.mapSize * Singleplayer.mapSize);
 
-		button = new Button("" + number, x, y, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		button = new Button("" + number, x, y);
 		button.setWidth(64);
 		button.setHeight(64);
 		button.text.setY(button.text.getY() + 20);
@@ -89,7 +89,7 @@ public class Number {
 			button.renderCustom(mX, mY, batch, sr, Color.FOREST);
 			break;
 		case 2:
-			button.renderCustom(mX, mY, batch, sr, Color.FIREBRICK);
+			button.renderCustom(mX, mY, batch, sr, Color.CYAN);
 			// TODO flashy animation
 			break;
 		case 3:

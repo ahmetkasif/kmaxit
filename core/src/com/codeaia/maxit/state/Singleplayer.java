@@ -53,10 +53,8 @@ public class Singleplayer extends State {
 			}
 		}
 
-		menu = new Button("Menu", 32, 36, Color.BLACK, Color.WHITE, Color.CYAN,
-				Color.BLACK);
-		reset = new Button("Reset", 32, 72, Color.BLACK, Color.WHITE, Color.CYAN,
-				Color.BLACK);
+		menu = new Button("Menu", 32, 45);
+		reset = new Button("Reset", 32, 90);
 
 		spointx = (new Random()).nextInt(5);
 		spointy = (new Random()).nextInt(5);
@@ -137,10 +135,6 @@ public class Singleplayer extends State {
 								maxitmap[i][k].button.playSound();
 								spointx = i;
 								spointy = k;
-								System.out.println(
-										maxitmap[i][k].getNumber() + "points to the player, its new score is : "
-												+ player1.getScore() + maxitmap[i][k].getNumber());
-
 								player1.addScore(maxitmap[i][k].getNumber());
 								turn = false;
 							}

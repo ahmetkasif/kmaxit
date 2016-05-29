@@ -25,7 +25,7 @@ public class Credits extends State {
 	public void create() {
 		super.create();
 		
-		menu = new Button("Menu", Game.width / 64, Game.height * 1/ 16, Color.BLACK, Color.WHITE, Color.CYAN, Color.BLACK);
+		menu = new Button("Menu", 32, 45);
 		
 		x = 0;
 
@@ -118,23 +118,23 @@ public class Credits extends State {
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
 		
-		fps.render(Color.WHITE, batch, sr);
+		fps.render(Color.BLACK, batch, sr);
 		
 		brand.render(Color.RED, batch, sr);
 		
 		titleDev.render(Color.CYAN, batch, sr);
-		dev1.render(Color.WHITE, batch, sr);
-		dev2.render(Color.WHITE, batch, sr);
-		dev3.render(Color.WHITE, batch, sr);
-		dev4.render(Color.WHITE, batch, sr);
-		dev5.render(Color.WHITE, batch, sr);
+		dev1.render(Color.BLACK, batch, sr);
+		dev2.render(Color.BLACK, batch, sr);
+		dev3.render(Color.BLACK, batch, sr);
+		dev4.render(Color.BLACK, batch, sr);
+		dev5.render(Color.BLACK, batch, sr);
 		
 		titleGfx.render(Color.CYAN, batch, sr);
-		gfx1.render(Color.WHITE, batch, sr);
+		gfx1.render(Color.BLACK, batch, sr);
 		
 		titleAlg.render(Color.CYAN, batch, sr);
-		alg1.render(Color.WHITE, batch, sr);
-		alg2.render(Color.WHITE, batch, sr);
+		alg1.render(Color.BLACK, batch, sr);
+		alg2.render(Color.BLACK, batch, sr);
 		
 		menu.render(mX, mY, batch, sr);
 		
@@ -142,7 +142,7 @@ public class Credits extends State {
 		kitten.draw(batch);
 		batch.end();
 	
-		footBrand.render(Color.LIGHT_GRAY, batch, sr);
+		footBrand.render(Color.DARK_GRAY, batch, sr);
 	}
 
 	@Override

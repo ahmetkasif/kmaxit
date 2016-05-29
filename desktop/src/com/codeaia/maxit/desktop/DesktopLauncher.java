@@ -12,8 +12,8 @@ public class DesktopLauncher {
 		config.height = 720;
 		config.fullscreen = false;
 		config.samples = 4; 
-		//config.backgroundFPS = 0;
-		//config.foregroundFPS = 0;
+		config.backgroundFPS = 0;
+		config.foregroundFPS = 0;
 		config.useGL30 = true;
 		config.resizable = false;
 		config.addIcon("img/codeaia32.png", Files.FileType.Internal);
