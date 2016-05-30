@@ -41,55 +41,26 @@ public class Help extends State {
 		super.update(mX, mY, delta);
 
 		if (menu.isClicked(mX, mY)) {
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.help != null) {
-				Game.help.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
+			
 			menu.playSound();
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.help != null) {
-				Game.help.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 		}
 	}
 
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
-		fps.render(Color.WHITE, batch, sr);
 		menu.render(mX, mY, batch, sr);
 		hint1.render(Color.WHITE, batch, sr);
 		hint2.render(Color.WHITE, batch, sr);
 		hint3.render(Color.WHITE, batch, sr);
 		hint4.render(Color.WHITE, batch, sr);
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
 	}
 
 }

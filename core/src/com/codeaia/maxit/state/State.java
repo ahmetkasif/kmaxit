@@ -1,9 +1,13 @@
 package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
+import com.codeaia.maxit.controller.Constants;
 import com.codeaia.maxit.ui.Text;
 
 public class State {
@@ -11,17 +15,21 @@ public class State {
 	public SpriteBatch batch;
 	public ShapeRenderer sr;
 	public Text fps;
+	public Sprite[] bg = new Sprite[2];
 
 	public State(int id) {
 		this.id = id;
-		batch = new SpriteBatch();
-		this.sr = new ShapeRenderer();
 	}
 
 	public void create() {
 		batch = new SpriteBatch();
-		fps = new Text("Fps : " + 60, 32, 658);
-		
+		sr = new ShapeRenderer();
+
+		bg[0] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/bgw.png")));
+		bg[1] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/bgl.png")));
+
+		fps = new Text("Fps : " + 60, 32 * Constants.scale, 678 * Constants.scale);
+
 		Timer.schedule(new Timer.Task() {
 			@Override
 			public void run() {
@@ -34,13 +42,16 @@ public class State {
 	}
 
 	public void render(float mX, float mY) {
-	}
+		batch.begin();
+		if (Constants.scale == 1) {
+			bg[0].draw(batch);
+		} else {
+			bg[1].draw(batch);
+		}
+		batch.end();
 
-	public void destroy() {
-		try {
-			this.finalize();
-		} catch (Throwable e) {
-			e.printStackTrace();
+		if (Constants.fpsEnable) {
+			fps.render(Color.WHITE, batch, sr);
 		}
 
 	}

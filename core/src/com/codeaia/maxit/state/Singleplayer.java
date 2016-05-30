@@ -5,9 +5,6 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.objects.Number;
@@ -16,10 +13,9 @@ import com.codeaia.maxit.ui.Button;
 import com.codeaia.maxit.ui.Text;
 
 public class Singleplayer extends State {
-	private Sprite bg;
 	public static int mapSize;
 	private Player player1, player2;
-	private Number[][] maxitmap = new Number[5][5];
+	private Number[][] maxitmap = new Number[7][7];
 	private int spointx, spointy;
 	private Text p1Score, p2Score;
 	private Button menu, reset;
@@ -33,10 +29,7 @@ public class Singleplayer extends State {
 	@Override
 	public void create() {
 		super.create();
-		mapSize = 5;
-		bg = new Sprite(new Texture(Gdx.files.internal("img/play/playbg.png")));
-		sr = new ShapeRenderer();
-
+		mapSize = 7;
 		player1 = new Player("You");
 		player2 = new Player("Computer (Easy)");
 
@@ -67,52 +60,19 @@ public class Singleplayer extends State {
 		super.update(mX, mY, delta);
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 		}
 
 		if (menu.isClicked(mX, mY)) {
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.help != null) {
-				Game.help.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 			menu.playSound();
 		}
 		
 		if (reset.isClicked(mX, mY)) {
-			Game.singleplayer = new Singleplayer(2);
+			Game.singleplayer.create();
 			Game.state = 2;
-			if (Game.menu != null) {
-				Game.menu.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.help != null) {
-				Game.help.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 			menu.playSound();
 		}
 
@@ -154,10 +114,6 @@ public class Singleplayer extends State {
 		super.render(mX, mY);
 
 		fps.render(Color.WHITE, batch, sr);
-
-		batch.begin();
-		bg.draw(batch);
-		batch.end();
 
 		p1Score.render(Color.WHITE, batch, sr);
 		p2Score.render(Color.WHITE, batch, sr);
@@ -251,8 +207,4 @@ public class Singleplayer extends State {
 		turn = true;
 	}
 
-	@Override
-	public void destroy() {
-		super.destroy();
-	}
 }

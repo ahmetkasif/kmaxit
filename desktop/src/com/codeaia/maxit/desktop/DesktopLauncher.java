@@ -1,23 +1,20 @@
 package com.codeaia.maxit.desktop;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.codeaia.maxit.controller.Game;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1280;
-		config.height = 720;
-		config.fullscreen = false;
-		config.samples = 4; 
-		config.backgroundFPS = 0;
-		config.foregroundFPS = 0;
-		config.useGL30 = true;
-		config.resizable = false;
-		config.addIcon("img/codeaia32.png", Files.FileType.Internal);
-		config.vSyncEnabled = true;
-		new LwjglApplication(new Game(), config);
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setTitle("Maxit+");
+		config.setWindowedMode(1280, 720);
+		config.useVsync(true);
+		config.useOpenGL3(true, 3, 2);
+		config.setResizable(false);
+		config.setWindowPosition(100, 48);
+		config.setBackBufferConfig(8, 8, 8, 8, 16, 0, 4);
+		
+		new Lwjgl3Application(new Game(), config);
 	}
 }

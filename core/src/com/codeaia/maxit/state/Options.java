@@ -1,20 +1,18 @@
 package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codeaia.maxit.controller.Constants;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.ui.Button;
 import com.codeaia.maxit.ui.Text;
 
 public class Options extends State {
-	private Sprite bg;
 	private int layer;
 	private Button menu, graphics, audio, fullscreenOn, fullscreenOff, vSyncOn, vSyncOff, fpsOn, fpsOff;
-	private Text fullscreen, vSync, fpsEnable;//, themes, mVolume, sVolume, fpsLabel;
+	private Text fullscreen, vSync, fpsEnable;
 
 	public Options(int id) {
 		super(id);
@@ -24,8 +22,6 @@ public class Options extends State {
 	@Override
 	public void create() {
 		super.create();
-		bg = new Sprite(new Texture(Gdx.files.internal("img/optionsbg.png")));
-
 		layer = 0;
 
 		graphics = new Button("Graphics", 32, 108);
@@ -41,20 +37,8 @@ public class Options extends State {
 		super.update(mX, mY, delta);
 
 		if (menu.isClicked(mX, mY)) {
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.help != null) {
-				Game.help.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 			menu.playSound();
 		}
 
@@ -68,17 +52,8 @@ public class Options extends State {
 
 		if (layer == 0) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-				Game.menu = new Menu(1);
+				Game.menu.create();
 				Game.state = 1;
-				if (Game.singleplayer != null) {
-					Game.singleplayer.destroy();
-				}
-				if (Game.options != null) {
-					Game.options.destroy();
-				}
-				if (Game.credits != null) {
-					Game.credits.destroy();
-				}
 			}
 			if (graphics.isClicked(mX, mY)) {
 				layer = 1;
@@ -97,37 +72,22 @@ public class Options extends State {
 				if (!Game.getPrefs().getBoolean("fullscreen")) {
 					if (Gdx.graphics.supportsDisplayModeChange()) {
 						Gdx.app.log("DisplayModeChange", "Set to fullscreen");
-						Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+						DisplayMode mode = Gdx.graphics.getDisplayMode();
+						Gdx.graphics.setFullscreenMode(mode);
 						Game.getPrefs().putBoolean("fullscreen", true);
 						Game.getPrefs().flush();
 						
 						fullscreenOn.setChecked(true);
 						fullscreenOff.setChecked(false);
-
-						if (Game.options != null) {
-							Game.options.destroy();
-						}
-
+						
+						Constants.scale = mode.width / 1280f;
+						
 						Game.state = 1;
-						Game.menu = new Menu(1);
-
+						Game.menu.create();
 						Game.state = 4;
-						Game.options = new Options(4);
+						Game.options.create();
 						
 						layer = 1;
-
-						if (Game.menu != null) {
-							Game.menu.destroy();
-						}
-						if (Game.singleplayer != null) {
-							Game.singleplayer.destroy();
-						}
-						if (Game.credits != null) {
-							Game.credits.destroy();
-						}
-						if (Game.help != null) {
-							Game.help.destroy();
-						}
 					}
 				}
 			}
@@ -142,31 +102,16 @@ public class Options extends State {
 						
 						fullscreenOn.setChecked(false);
 						fullscreenOff.setChecked(true);
-
-						if (Game.options != null) {
-							Game.options.destroy();
-						}
-
+						
+						Constants.scale = Constants.width / 1280f;
+						
 						Game.state = 1;
-						Game.menu = new Menu(1);
+						Game.menu.create();
 
 						Game.state = 4;
-						Game.options = new Options(4);
+						Game.options.create();
 						
 						layer = 1;
-
-						if (Game.menu != null) {
-							Game.menu.destroy();
-						}
-						if (Game.singleplayer != null) {
-							Game.singleplayer.destroy();
-						}
-						if (Game.credits != null) {
-							Game.credits.destroy();
-						}
-						if (Game.help != null) {
-							Game.help.destroy();
-						}
 					}
 				}
 			}
@@ -194,6 +139,24 @@ public class Options extends State {
 					vSyncOff.setChecked(true);
 				}
 			}
+			
+			if (fpsOn.isClicked(mX, mY)) {
+					Constants.fpsEnable = true;
+					Game.getPrefs().putBoolean("fpsEnable", true);
+					Game.getPrefs().flush();
+					
+					fpsOn.setChecked(true);
+					fpsOff.setChecked(false);
+			}
+
+			if (fpsOff.isClicked(mX, mY)) {
+				Constants.fpsEnable = false;
+				Game.getPrefs().putBoolean("fpsEnable", false);
+				Game.getPrefs().flush();
+				
+				fpsOn.setChecked(false);
+				fpsOff.setChecked(true);
+			}
 
 		} else if (layer == 2) {
 
@@ -207,12 +170,6 @@ public class Options extends State {
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
-		batch.begin();
-		bg.draw(batch);
-		batch.end();
-
-		fps.render(Color.WHITE, batch, sr);
-
 		menu.render(mX, mY, batch, sr);
 		graphics.render(mX, mY, batch, sr);
 		audio.render(mX, mY, batch, sr);
@@ -244,8 +201,12 @@ public class Options extends State {
 	private void initGraphicStage() {
 		fullscreen = new Text("Fullscreen :", 448, 445);
 		fullscreenOn = new Button("Fullscreen", 548, 428);
+		fullscreenOn.setWidth(fullscreenOn.getWidth() + 16);
+		fullscreenOn.text.setX(fullscreenOn.text.getX() + 8);
 		fullscreenOn.setCheckbox(true);
-		fullscreenOff = new Button("Windowed", 648, 428);
+		fullscreenOff = new Button("Windowed", 688, 428);
+		fullscreenOff.setWidth(fullscreenOff.getWidth() + 16);
+		fullscreenOff.text.setX(fullscreenOff.text.getX() + 8);
 		fullscreenOff.setCheckbox(true);
 
 		if (Game.getPrefs().getBoolean("fullscreen")) {
@@ -258,8 +219,12 @@ public class Options extends State {
 
 		vSync = new Text("V-Sync :", 448, 490);
 		vSyncOn = new Button("On", 568, 477);
+		vSyncOn.setWidth(vSyncOn.getWidth() + 16);
+		vSyncOn.text.setX(vSyncOn.text.getX() + 8);
 		vSyncOn.setCheckbox(true);
 		vSyncOff = new Button("Off", 668, 477);
+		vSyncOff.setWidth(vSyncOff.getWidth() + 16);
+		vSyncOff.text.setX(vSyncOff.text.getX() + 8);
 		vSyncOff.setCheckbox(true);
 
 		if (Game.getPrefs().getBoolean("vsync")) {
@@ -272,8 +237,12 @@ public class Options extends State {
 
 		fpsEnable = new Text("Fps :", 448, 535);
 		fpsOn = new Button("On", 568, 518);
+		fpsOn.setWidth(fpsOn.getWidth() + 16);
+		fpsOn.text.setX(fpsOn.text.getX() + 8);
 		fpsOn.setCheckbox(true);
 		fpsOff = new Button("Off", 668, 518);
+		fpsOff.setWidth(fpsOff.getWidth() + 16);
+		fpsOff.text.setX(fpsOff.text.getX() + 8);
 		fpsOff.setCheckbox(true);
 
 		if (Game.getPrefs().getBoolean("fpsEnable")) {
@@ -286,10 +255,7 @@ public class Options extends State {
 	}
 
 	private void initAudioStage() {
+		
 	}
 
-	@Override
-	public void destroy() {
-		super.destroy();
-	}
 }

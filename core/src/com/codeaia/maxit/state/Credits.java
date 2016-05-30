@@ -45,7 +45,7 @@ public class Credits extends State {
 		alg1 = new Text("Abdullah Oguk", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 290);
 		alg2 = new Text("Ahmet Kasif", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 310);
 		
-		kitten = new Sprite(new Texture(Gdx.files.internal("img/codeaia.png")));
+		kitten = new Sprite(new Texture(Gdx.files.internal("gfx/ui/codeaia.png")));
 		kitten.setPosition(Gdx.graphics.getWidth() / 2 - 40 - kitten.getWidth() / 2, Gdx.graphics.getHeight() / 2 - x - 330 - kitten.getHeight());
 		
 		footBrand = new Text("Kitten Maxit - Plus v1.1 / Feb 2016", Gdx.graphics.getWidth() / 2 - 160, Gdx.graphics.getHeight() / 2 - x - 360 - kitten.getHeight());
@@ -58,20 +58,8 @@ public class Credits extends State {
 		x += delta * 120;
 		
 		if(menu.isClicked(mX, mY)){
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.help != null) {
-				Game.help.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 			menu.playSound();
 		}
 		
@@ -99,17 +87,8 @@ public class Credits extends State {
 		footBrand.setY(Gdx.graphics.getHeight() / 2 + x - 360 - kitten.getHeight());
 		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			Game.menu = new Menu(1);
+			Game.menu.create();
 			Game.state = 1;
-			if (Game.singleplayer != null) {
-				Game.singleplayer.destroy();
-			}
-			if (Game.options != null) {
-				Game.options.destroy();
-			}
-			if (Game.credits != null) {
-				Game.credits.destroy();
-			}
 		}
 
 	}
@@ -117,8 +96,6 @@ public class Credits extends State {
 	@Override
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
-		
-		fps.render(Color.BLACK, batch, sr);
 		
 		brand.render(Color.RED, batch, sr);
 		
@@ -145,8 +122,4 @@ public class Credits extends State {
 		footBrand.render(Color.DARK_GRAY, batch, sr);
 	}
 
-	@Override
-	public void destroy() {
-		super.destroy();
-	}
 }

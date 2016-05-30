@@ -21,7 +21,7 @@ public class Button {
 		text = new Text(value, x + offset, y + 2 * offset);
 		setWidth((2 * offset) + text.getWidth());
 		setHeight(text.getHeight() + (2 * offset));
-
+		
 		setBgColor(Color.valueOf("2196f3"));
 		setTextColor(Color.valueOf("ffffff"));
 		setBorderColor(Color.valueOf("000000"));

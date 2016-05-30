@@ -20,7 +20,6 @@ public class Text {
 		layout = new GlyphLayout();
 		this.text = text;
 		layout.setText(font, text);
-		
 		setX(x);
 		setY(y);
 		setWidth(layout.width);
