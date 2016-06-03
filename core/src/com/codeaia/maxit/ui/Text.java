@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.codeaia.maxit.controller.Constants;
 
 public class Text {
 	private BitmapFont font;
@@ -14,7 +15,7 @@ public class Text {
 	private boolean bgColorEnabled;
 	private Color backgroundColor;
 	private GlyphLayout layout;
-	
+
 	public Text(String text, float x, float y) {
 		font = new BitmapFont();
 		layout = new GlyphLayout();
@@ -24,7 +25,7 @@ public class Text {
 		setY(y);
 		setWidth(layout.width);
 		setHeight(11);
-		
+
 		bgColorEnabled = false;
 		this.y = y;
 	}
@@ -33,12 +34,12 @@ public class Text {
 		if (bgColorEnabled) {
 			sr.begin(ShapeType.Filled);
 			sr.setColor(backgroundColor);
-			//sr.rect(x, y, width, height);
+			// sr.rect(x, y, width, height);
 			sr.end();
 		}
 		batch.begin();
 		font.setColor(color);
-		font.draw(batch, text, x, y);
+		font.draw(batch, text, x * Constants.scale, y * Constants.scale);
 		batch.end();
 	}
 

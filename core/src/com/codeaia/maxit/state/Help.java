@@ -2,6 +2,7 @@ package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.ui.Button;
@@ -20,7 +21,7 @@ public class Help extends State {
 	public void create() {
 		super.create();
 
-		menu = new Button("Menu", 32, 45);
+		menu = new Button("Menu", 32, 45, Keys.M);
 
 		hint1 = new Text(
 				"1) ESCAPE key makes you return to the previous screen, only if you are not on main menu. If this is the case, you exit the application!",
@@ -40,11 +41,9 @@ public class Help extends State {
 	public void update(float mX, float mY, float delta) {
 		super.update(mX, mY, delta);
 
-		if (menu.isClicked(mX, mY)) {
+		if (menu.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(menu.getKey())) {
 			Game.menu.create();
 			Game.state = 1;
-			
-			menu.playSound();
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {

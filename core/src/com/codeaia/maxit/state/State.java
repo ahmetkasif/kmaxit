@@ -1,20 +1,19 @@
 package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.codeaia.maxit.controller.Constants;
-import com.codeaia.maxit.ui.Text;
+import com.codeaia.maxit.ui.Button;
 
 public class State {
 	public int id;
 	public SpriteBatch batch;
 	public ShapeRenderer sr;
-	public Text fps;
+	public Button fps;
 	public Sprite[] bg = new Sprite[2];
 
 	public State(int id) {
@@ -25,15 +24,15 @@ public class State {
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
 
-		bg[0] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/bgw.png")));
-		bg[1] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/bgl.png")));
+		bg[0] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/layout.png")));
+		bg[1] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/layout-dif.png")));
 
-		fps = new Text("Fps : " + 60, 32 * Constants.scale, 678 * Constants.scale);
+		fps = new Button("Fps : " + 60, 32, 678);
 
 		Timer.schedule(new Timer.Task() {
 			@Override
 			public void run() {
-				fps.setText("Fps: " + (int) (1 / Gdx.graphics.getDeltaTime()));
+				fps.text = "Fps: " + (int) (1 / Gdx.graphics.getDeltaTime());
 			}
 		}, 1f, 1f);
 	}
@@ -49,9 +48,9 @@ public class State {
 			bg[1].draw(batch);
 		}
 		batch.end();
-
+		
 		if (Constants.fpsEnable) {
-			fps.render(Color.WHITE, batch, sr);
+			fps.render(mX, mY, batch, sr);
 		}
 
 	}

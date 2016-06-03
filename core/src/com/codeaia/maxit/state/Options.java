@@ -3,6 +3,7 @@ package com.codeaia.maxit.state;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.codeaia.maxit.controller.Constants;
 import com.codeaia.maxit.controller.Game;
@@ -24,9 +25,6 @@ public class Options extends State {
 		super.create();
 		layer = 0;
 
-		graphics = new Button("Graphics", 32, 108);
-		audio = new Button("Audio", 32, 144);
-
 		initOptionStage();
 		initGraphicStage();
 		initAudioStage();
@@ -36,17 +34,16 @@ public class Options extends State {
 	public void update(float mX, float mY, float delta) {
 		super.update(mX, mY, delta);
 
-		if (menu.isClicked(mX, mY)) {
+		if (menu.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(menu.getKey())) {
 			Game.menu.create();
 			Game.state = 1;
-			menu.playSound();
 		}
 
-		if (graphics.isClicked(mX, mY)) {
+		if (graphics.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(graphics.getKey())) {
 			layer = 1;
 		}
 
-		if (audio.isClicked(mX, mY)) {
+		if (audio.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(audio.getKey())) {
 			layer = 2;
 		}
 
@@ -71,22 +68,20 @@ public class Options extends State {
 			if (fullscreenOn.isClicked(mX, mY)) {
 				if (!Game.getPrefs().getBoolean("fullscreen")) {
 					if (Gdx.graphics.supportsDisplayModeChange()) {
-						Gdx.app.log("DisplayModeChange", "Set to fullscreen");
-						DisplayMode mode = Gdx.graphics.getDisplayMode();
-						Gdx.graphics.setFullscreenMode(mode);
-						Game.getPrefs().putBoolean("fullscreen", true);
-						Game.getPrefs().flush();
-						
 						fullscreenOn.setChecked(true);
 						fullscreenOff.setChecked(false);
 						
+						DisplayMode mode = Gdx.graphics.getDisplayMode();
 						Constants.scale = mode.width / 1280f;
+						Gdx.graphics.setFullscreenMode(mode);
 						
+						Game.getPrefs().putBoolean("fullscreen", true);
+						Game.getPrefs().flush();
+
 						Game.state = 1;
 						Game.menu.create();
 						Game.state = 4;
 						Game.options.create();
-						
 						layer = 1;
 					}
 				}
@@ -95,22 +90,21 @@ public class Options extends State {
 			if (fullscreenOff.isClicked(mX, mY)) {
 				if (Game.getPrefs().getBoolean("fullscreen")) {
 					if (Gdx.graphics.supportsDisplayModeChange()) {
-						Gdx.app.log("DisplayModeChange", "Set to windowed");
-						Gdx.graphics.setWindowedMode(Constants.width, Constants.height);
-						Game.getPrefs().putBoolean("fullscreen", false);
-						Game.getPrefs().flush();
-						
 						fullscreenOn.setChecked(false);
 						fullscreenOff.setChecked(true);
 						
+						Constants.width = 1280;
+						Constants.height = 720;
 						Constants.scale = Constants.width / 1280f;
+						Gdx.graphics.setWindowedMode(Constants.width, Constants.height);
+						
+						Game.getPrefs().putBoolean("fullscreen", false);
+						Game.getPrefs().flush();
 						
 						Game.state = 1;
 						Game.menu.create();
-
 						Game.state = 4;
 						Game.options.create();
-						
 						layer = 1;
 					}
 				}
@@ -118,11 +112,10 @@ public class Options extends State {
 
 			if (vSyncOn.isClicked(mX, mY)) {
 				if (Gdx.graphics.supportsDisplayModeChange()) {
-					Gdx.app.log("DisplayModeChange", "V-Sync On");
 					Gdx.graphics.setVSync(true);
 					Game.getPrefs().putBoolean("vsync", true);
 					Game.getPrefs().flush();
-					
+
 					vSyncOn.setChecked(true);
 					vSyncOff.setChecked(false);
 				}
@@ -130,30 +123,29 @@ public class Options extends State {
 
 			if (vSyncOff.isClicked(mX, mY)) {
 				if (Gdx.graphics.supportsDisplayModeChange()) {
-					Gdx.app.log("DisplayModeChange", "V-Sync Off");
 					Gdx.graphics.setVSync(false);
 					Game.getPrefs().putBoolean("vsync", false);
 					Game.getPrefs().flush();
-					
+
 					vSyncOn.setChecked(false);
 					vSyncOff.setChecked(true);
 				}
 			}
-			
+
 			if (fpsOn.isClicked(mX, mY)) {
-					Constants.fpsEnable = true;
-					Game.getPrefs().putBoolean("fpsEnable", true);
-					Game.getPrefs().flush();
-					
-					fpsOn.setChecked(true);
-					fpsOff.setChecked(false);
+				Constants.fpsEnable = true;
+				Game.getPrefs().putBoolean("fpsEnable", true);
+				Game.getPrefs().flush();
+
+				fpsOn.setChecked(true);
+				fpsOff.setChecked(false);
 			}
 
 			if (fpsOff.isClicked(mX, mY)) {
 				Constants.fpsEnable = false;
 				Game.getPrefs().putBoolean("fpsEnable", false);
 				Game.getPrefs().flush();
-				
+
 				fpsOn.setChecked(false);
 				fpsOff.setChecked(true);
 			}
@@ -193,20 +185,18 @@ public class Options extends State {
 	}
 
 	private void initOptionStage() {
-		menu = new Button("Menu", 32, 45);
-		graphics = new Button("Graphics", 32, 135);
-		audio = new Button("Audio", 32, 180);
+		menu = new Button("Menu", 32, 45, Keys.M);
+		graphics = new Button("Graphics", 32, 108, Keys.G);
+		audio = new Button("Audio", 32, 144, Keys.A);
 	}
 
 	private void initGraphicStage() {
 		fullscreen = new Text("Fullscreen :", 448, 445);
 		fullscreenOn = new Button("Fullscreen", 548, 428);
 		fullscreenOn.setWidth(fullscreenOn.getWidth() + 16);
-		fullscreenOn.text.setX(fullscreenOn.text.getX() + 8);
 		fullscreenOn.setCheckbox(true);
 		fullscreenOff = new Button("Windowed", 688, 428);
 		fullscreenOff.setWidth(fullscreenOff.getWidth() + 16);
-		fullscreenOff.text.setX(fullscreenOff.text.getX() + 8);
 		fullscreenOff.setCheckbox(true);
 
 		if (Game.getPrefs().getBoolean("fullscreen")) {
@@ -220,11 +210,9 @@ public class Options extends State {
 		vSync = new Text("V-Sync :", 448, 490);
 		vSyncOn = new Button("On", 568, 477);
 		vSyncOn.setWidth(vSyncOn.getWidth() + 16);
-		vSyncOn.text.setX(vSyncOn.text.getX() + 8);
 		vSyncOn.setCheckbox(true);
 		vSyncOff = new Button("Off", 668, 477);
 		vSyncOff.setWidth(vSyncOff.getWidth() + 16);
-		vSyncOff.text.setX(vSyncOff.text.getX() + 8);
 		vSyncOff.setCheckbox(true);
 
 		if (Game.getPrefs().getBoolean("vsync")) {
@@ -238,11 +226,9 @@ public class Options extends State {
 		fpsEnable = new Text("Fps :", 448, 535);
 		fpsOn = new Button("On", 568, 518);
 		fpsOn.setWidth(fpsOn.getWidth() + 16);
-		fpsOn.text.setX(fpsOn.text.getX() + 8);
 		fpsOn.setCheckbox(true);
 		fpsOff = new Button("Off", 668, 518);
 		fpsOff.setWidth(fpsOff.getWidth() + 16);
-		fpsOff.text.setX(fpsOff.text.getX() + 8);
 		fpsOff.setCheckbox(true);
 
 		if (Game.getPrefs().getBoolean("fpsEnable")) {
@@ -255,7 +241,7 @@ public class Options extends State {
 	}
 
 	private void initAudioStage() {
-		
+
 	}
 
 }

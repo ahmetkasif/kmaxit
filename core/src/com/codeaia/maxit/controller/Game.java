@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -19,6 +20,7 @@ public class Game extends ApplicationAdapter {
 	public static int state;
 	public static float mX, mY;
 	private Music music;
+	private static Sound clickSound, hoverSound;
 	public Preferences preferences;
 	public Cursor cursor;
 
@@ -26,10 +28,8 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		cursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("gfx/cursors/normal.png")), 0, 0);
 		preferences = getPrefs();
 		if (!(preferences.getBoolean("valid"))) {
-			Gdx.app.log("Constants Initialization", "Seems we got a new user!");
 			preferences = Gdx.app.getPreferences("kmaxit_pref");
 
 			preferences.putBoolean("valid", true);
@@ -49,39 +49,35 @@ public class Game extends ApplicationAdapter {
 			preferences.flush();
 			Constants.loadConstants();
 		} else {
-			Gdx.app.log("Constant Initialization", "Welcome back!");
 			Constants.loadConstants();
 
-			if (Gdx.graphics.supportsDisplayModeChange()) {
-				if (Constants.fullscreen && !Gdx.graphics.isFullscreen()) {
-					Gdx.app.log("DisplayModeChange", "Set to fullscreen");
+			if (Constants.fullscreen && !Gdx.graphics.isFullscreen()) {
+				if (Gdx.graphics.supportsDisplayModeChange()) {
 					DisplayMode mode = Gdx.graphics.getDisplayMode();
-					Gdx.graphics.setFullscreenMode(mode);
 					Constants.width = mode.width;
 					Constants.height = mode.height;
-					Constants.scale = mode.width / 1280f;
-				} else if (!Constants.fullscreen && Gdx.graphics.isFullscreen()) {
-					Gdx.app.log("DisplayModeChange", "Set to windowed");
-					Gdx.graphics.setWindowedMode(Constants.width, Constants.height);
 					Constants.scale = Constants.width / 1280f;
+					Gdx.graphics.setFullscreenMode(mode);
 				}
-				Gdx.graphics.setVSync(Constants.vsync);
 			}
+			Gdx.graphics.setVSync(Constants.vsync);
 		}
 
-		mX = 0;
-		mY = 0;
+		cursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("gfx/cursors/normal.png")), 0, 0);
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("music/maintheme.ogg"));
 		music.setVolume(Constants.musicVolume);
 		music.play();
 		music.setLooping(true);
-		
-		if (music.isPlaying()) {
-			System.out.println("music playing!");
-		}
+
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("sound/clicksound.wav"));
+		hoverSound = Gdx.audio.newSound(Gdx.files.internal("sound/clicksound.wav"));
+
+		mX = 0;
+		mY = 0;
 
 		state = 1;
+
 		menu = new Menu(1);
 		singleplayer = new Singleplayer(2);
 		help = new Help(3);
@@ -119,13 +115,13 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void render() {
 		update(Gdx.graphics.getRawDeltaTime());
-		
+
 		Gdx.gl30.glClearColor(1, 1, 1, 1);
 		Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL30.GL_COVERAGE_BUFFER_BIT_NV : 0));
-		
+
 		Gdx.graphics.setCursor(cursor);
-		
+
 		if (state == 1) {
 			if (!menu.equals(null)) {
 				menu.render(mX, mY);
@@ -151,7 +147,7 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void resize(int width, int height) {
-		
+
 	}
 
 	@Override
@@ -161,5 +157,9 @@ public class Game extends ApplicationAdapter {
 
 	public static Preferences getPrefs() {
 		return Gdx.app.getPreferences("kmaxit_pref");
+	}
+
+	public static void playClickSound() {
+		clickSound.play(Constants.soundVolume);
 	}
 }

@@ -1,176 +1,141 @@
 package com.codeaia.maxit.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.codeaia.maxit.controller.Constants;
+import com.codeaia.maxit.controller.Game;
 
 public class Button {
-	public Text text;
-	private Sound clickSound;
-	private Color bgColor, textColor, hoverColor, borderColor;
+	public String text;
 	private float x, y, width, height;
 	private int offset = 11;
 	private boolean checkbox, checked;
-	
-	public Button(String value, float x, float y) {
+	private NinePatch np, np_hover, np_checked, np_checked_hover;
+	private int key;
+	private BitmapFont font;
+	private GlyphLayout layout;
+
+	public Button(String text, float x, float y, int key) {
+		font = new BitmapFont();
+		layout = new GlyphLayout();
+
+		this.key = key;
+		this.text = text;
 		setX(x);
 		setY(y);
-		text = new Text(value, x + offset, y + 2 * offset);
-		setWidth((2 * offset) + text.getWidth());
-		setHeight(text.getHeight() + (2 * offset));
-		
-		setBgColor(Color.valueOf("2196f3"));
-		setTextColor(Color.valueOf("ffffff"));
-		setBorderColor(Color.valueOf("000000"));
-		setHoverColor(Color.valueOf("ff5656"));
-		
+
+		layout.setText(font, text);
+
+		setWidth((2 * offset) + layout.width);
+		setHeight(11 + (2 * offset));
+
+		np = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np.png")), 16, 16, 16, 16);
+		np_hover = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np_hover.png")), 16, 16, 16, 16);
+		np_checked = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np_checked.png")), 16, 16, 16, 16);
+		np_checked_hover = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np_checked_hover.png")), 16, 16, 16,
+				16);
+
 		checkbox = false;
 		checked = false;
-
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("sound/clicksound.wav"));
-	}
-	
-	public boolean isClicked(float mX, float mY) {
-		if (isHovered(mX, mY) && Gdx.input.justTouched()) {
-			return true;
-		}
-		return false;
 	}
 
-	public void playSound() {
-		clickSound.play();
-	}
+	public Button(String text, float x, float y) {
+		font = new BitmapFont();
+		layout = new GlyphLayout();
 
-	public void render(float mX, float mY, SpriteBatch batch, ShapeRenderer sr) {
-		
-		if(checkbox){
-			if(checked){
-				batch.begin();
-				sr.begin(ShapeType.Filled);
-				sr.setColor(bgColor);
-				sr.rect(x, y, width, height);
-				sr.setColor(Color.ORANGE);
-				sr.triangle(x + 8, y + (height - 8) / 2, x + 8, y + (height + 8) / 2, x + 16, y + height / 2);
-				sr.end();
-				batch.end();
-				
-				if (!isHovered(mX, mY)) {
-					batch.begin();
-					sr.begin(ShapeType.Line);
-					sr.setColor(borderColor);
-					sr.rect(x, y, width, height);
-					sr.end();
-					batch.end();
-					text.render(textColor, batch, sr);
-				} else {
-					batch.begin();
-					sr.begin(ShapeType.Line);
-					sr.setColor(hoverColor);
-					sr.rect(x, y, width, height);
-					sr.end();
-					batch.end();
-					text.render(hoverColor, batch, sr);
-				}
-			}else{
-				batch.begin();
-				sr.begin(ShapeType.Filled);
-				sr.setColor(bgColor);
-				sr.rect(x, y, width, height);
-				sr.end();
-				batch.end();
-				
-				if (!isHovered(mX, mY)) {
-					batch.begin();
-					sr.begin(ShapeType.Line);
-					sr.setColor(borderColor);
-					sr.rect(x, y, width, height);
-					sr.end();
-					batch.end();
-					text.render(textColor, batch, sr);
-				} else {
-					batch.begin();
-					sr.begin(ShapeType.Line);
-					sr.setColor(hoverColor);
-					sr.rect(x, y, width, height);
-					sr.end();
-					batch.end();
-					text.render(hoverColor, batch, sr);
-				}
-			}
-			
-			
-		}else{
-			if (!isHovered(mX, mY)) {
-				batch.begin();
-				sr.begin(ShapeType.Filled);
-				sr.setColor(bgColor);
-				sr.rect(x, y, width, height);
-				sr.end();
-				sr.begin(ShapeType.Line);
-				sr.setColor(borderColor);
-				sr.rect(x, y, width, height);
-				sr.end();
-				batch.end();
-				text.render(textColor, batch, sr);
-			} else {
-				batch.begin();
-				sr.begin(ShapeType.Filled);
-				sr.setColor(hoverColor);
-				sr.rect(x, y, width, height);
-				sr.end();
-				sr.begin(ShapeType.Line);
-				sr.setColor(borderColor);
-				sr.rect(x, y, width, height);
-				sr.end();
-				batch.end();
-				text.render(textColor, batch, sr);
-			}
-		}
-	}
-	
-	public void renderCustom(float mX, float mY, SpriteBatch batch, ShapeRenderer sr, Color color) {
-		if (!isHovered(mX, mY)) {
-			batch.begin();
-			sr.begin(ShapeType.Filled);
-			sr.setColor(color);
-			sr.rect(x, y, width, height);
-			sr.end();
-			batch.end();
-			text.render(textColor, batch, sr);
-		} else {
-			batch.begin();
-			sr.begin(ShapeType.Filled);
-			sr.setColor(color);
-			sr.rect(x, y, width, height);
-			sr.end();
-			sr.begin(ShapeType.Line);
-			sr.setColor(Color.ORANGE);
-			sr.line(x, y, x + 8, y);
-			sr.line(x, y, x, y + 8);
-			sr.line(x + 56, y, x + 64, y);
-			sr.line(x + 64, y, x + 64, y + 8);
-			sr.line(x + 64, y + 56, x + 64, y + 64);
-			sr.line(x + 56, y + 64, x + 64, y + 64);
-			sr.line(x, y + 64, x + 8, y + 64);
-			sr.line(x, y + 56, x, y + 64);
-			sr.end();
-			batch.end();
-			text.render(Color.BLACK, batch, sr);
-		}
+		this.text = text;
+		setX(x);
+		setY(y);
+		key = -1;
+
+		layout.setText(font, text);
+
+		setWidth((2 * offset) + layout.width);
+		setHeight(11 + (2 * offset));
+
+		np = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np.png")), 16, 16, 16, 16);
+		np_hover = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np_hover.png")), 16, 16, 16, 16);
+		np_checked = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np_checked.png")), 16, 16, 16, 16);
+		np_checked_hover = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np_checked_hover.png")), 16, 16, 16,
+				16);
+
+		checkbox = false;
+		checked = false;
 	}
 
 	public Boolean isHovered(float mX, float mY) {
-		if (mX > x && mX < x + width && mY > y && mY < y + height) {
+		if (mX > x * Constants.scale && mX < (x + width) * Constants.scale && mY > y * Constants.scale
+				&& mY < (y + height) * Constants.scale) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+	public boolean isClicked(float mX, float mY) {
+		if (isHovered(mX, mY) && Gdx.input.justTouched()) {
+			Game.playClickSound();
+			return true;
+		}
+		return false;
+	}
+
+	public void render(float mX, float mY, SpriteBatch batch, ShapeRenderer sr) {
+		batch.begin();
+		if (checkbox) {
+			if (checked) {
+				if (!isHovered(mX, mY)) {
+					np_checked.draw(batch, x * Constants.scale, y * Constants.scale, width * Constants.scale,
+							height * Constants.scale);
+				} else {
+					np_checked_hover.draw(batch, x * Constants.scale, y * Constants.scale, width,
+							height * Constants.scale);
+				}
+			} else {
+				if (!isHovered(mX, mY)) {
+					np.draw(batch, x * Constants.scale, y * Constants.scale, width * Constants.scale,
+							height * Constants.scale);
+				} else {
+					np_hover.draw(batch, x * Constants.scale, y * Constants.scale, width * Constants.scale,
+							height * Constants.scale);
+				}
+			}
+		} else {
+			if (!isHovered(mX, mY)) {
+				np.draw(batch, x * Constants.scale, y * Constants.scale, width * Constants.scale,
+						height * Constants.scale);
+			} else {
+				np_hover.draw(batch, x * Constants.scale, y * Constants.scale, width * Constants.scale,
+						height * Constants.scale);
+			}
+		}
+		batch.end();
+
+		if (key == -1) {
+			batch.begin();
+			font.draw(batch, text, (x + offset) * Constants.scale, (y + 2 * offset) * Constants.scale);
+			batch.end();
+
+		} else {
+			batch.begin();
+			font.setColor(Color.WHITE);
+			font.draw(batch, text, (x + offset) * Constants.scale, (y + 2 * offset) * Constants.scale);
+			font.setColor(Color.ORANGE);
+			font.draw(batch, "" + text.charAt(0), (x + offset) * Constants.scale, (y + 2 * offset) * Constants.scale);
+			batch.end();
+		}
+
+	}
+
+	public GlyphLayout getLayout() {
+		return this.layout;
+	}
 
 	public float getX() {
 		return x;
@@ -186,47 +151,6 @@ public class Button {
 
 	public void setY(float y) {
 		this.y = y;
-	}
-
-	public Color getBgColor() {
-		return bgColor;
-	}
-
-	public void setBgColor(Color bgColor) {
-		this.bgColor = bgColor;
-	}
-
-	public Color getTextColor() {
-		return textColor;
-	}
-
-	public void setTextColor(Color textColor) {
-		this.textColor = textColor;
-	}
-
-	public Color getBorderColor() {
-		return borderColor;
-	}
-
-	public void setBorderColor(Color borderColor) {
-		this.borderColor = borderColor;
-	}
-
-	public Color getHoverColor() {
-		return hoverColor;
-	}
-
-	public void setHoverColor(Color hoverColor) {
-		this.hoverColor = hoverColor;
-	}
-
-	public void destroy() {
-		try {
-			this.finalize();
-		} catch (Throwable e) {
-			Gdx.app.log("Button", "Button finalization error", e);
-			e.printStackTrace();
-		}
 	}
 
 	public float getWidth() {
@@ -267,6 +191,10 @@ public class Button {
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public int getKey() {
+		return key;
 	}
 
 }

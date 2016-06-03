@@ -4,22 +4,24 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.codeaia.maxit.controller.Constants;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.objects.Number;
 import com.codeaia.maxit.objects.Player;
 import com.codeaia.maxit.ui.Button;
-import com.codeaia.maxit.ui.Text;
 
 public class Singleplayer extends State {
 	public static int mapSize;
 	private Player player1, player2;
 	private Number[][] maxitmap = new Number[7][7];
 	private int spointx, spointy;
-	private Text p1Score, p2Score;
+	private Button p1Score, p2Score;
 	private Button menu, reset;
 	private boolean turn;
+	private NinePatch table;
 
 	public Singleplayer(int id) {
 		super(id);
@@ -35,9 +37,12 @@ public class Singleplayer extends State {
 
 		turn = true;
 
-		p1Score = new Text(player1.getName() + ": " + player1.getScore(), 50, Gdx.graphics.getHeight() * 3 / 4);
-		p2Score = new Text(player2.getName() + ": " + player2.getScore(),
-				Gdx.graphics.getWidth() - 50 - (player2.getName().length() + 5) * 8, Gdx.graphics.getHeight() * 3 / 4);
+		p1Score = new Button(player1.getName() + ": " + 0, 32, 540);
+		p1Score.setWidth((2 * p1Score.getOffset()) + p1Score.getLayout().width + 16);
+		p2Score = new Button(player2.getName() + ": " + 0, 1088, 540);
+		p2Score.setWidth((2 * p2Score.getOffset()) + p2Score.getLayout().width + 16);
+
+		table = new NinePatch(new Texture(Gdx.files.internal("gfx/ui/np.png")), 16, 16, 16, 16);
 
 		for (int i = 0; i < mapSize; i++) {
 			for (int k = 0; k < mapSize; k++) {
@@ -46,11 +51,11 @@ public class Singleplayer extends State {
 			}
 		}
 
-		menu = new Button("Menu", 32, 45);
-		reset = new Button("Reset", 32, 90);
+		menu = new Button("Menu", 32, 45, Keys.M);
+		reset = new Button("Reset", 32, 90, Keys.R);
 
-		spointx = (new Random()).nextInt(5);
-		spointy = (new Random()).nextInt(5);
+		spointx = (new Random()).nextInt(mapSize);
+		spointy = (new Random()).nextInt(mapSize);
 
 		maxitmap[spointx][spointy].setState(3);
 	}
@@ -64,22 +69,15 @@ public class Singleplayer extends State {
 			Game.state = 1;
 		}
 
-		if (menu.isClicked(mX, mY)) {
+		if (menu.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(menu.getKey())) {
 			Game.menu.create();
 			Game.state = 1;
-			menu.playSound();
-		}
-		
-		if (reset.isClicked(mX, mY)) {
-			Game.singleplayer.create();
-			Game.state = 2;
-			menu.playSound();
 		}
 
-		p1Score.setText(player1.getName() + ": " + player1.getScore());
-		p1Score.setBackgroundColor(Color.DARK_GRAY);
-		p2Score.setText(player2.getName() + ": " + player2.getScore());
-		p2Score.setBackgroundColor(Color.DARK_GRAY);
+		if (reset.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(reset.getKey())) {
+			Game.singleplayer.create();
+			Game.state = 2;
+		}
 
 		markSelectable(spointx, spointy);
 
@@ -92,10 +90,13 @@ public class Singleplayer extends State {
 							if (Gdx.input.isTouched()) {
 								undoSelectable(spointx, spointy);
 								maxitmap[i][k].setState(3);
-								maxitmap[i][k].button.playSound();
+								Game.playClickSound();
 								spointx = i;
 								spointy = k;
+
 								player1.addScore(maxitmap[i][k].getNumber());
+								p1Score.text = player1.getName() + ": " + player1.getScore();
+
 								turn = false;
 							}
 						} else {
@@ -113,16 +114,14 @@ public class Singleplayer extends State {
 	public void render(float mX, float mY) {
 		super.render(mX, mY);
 
-		fps.render(Color.WHITE, batch, sr);
+		p1Score.render(mX, mY, batch, sr);
+		p2Score.render(mX, mY, batch, sr);
 
-		p1Score.render(Color.WHITE, batch, sr);
-		p2Score.render(Color.WHITE, batch, sr);
-
-		sr.begin(ShapeType.Filled);
-		sr.setColor(0.90f, 0.90f, 0.90f, 1f);
-		sr.rect((1280 - (72 * mapSize + 24)) / 2, (720 - (72 * mapSize + 24)) / 2, 72 * mapSize + 24,
-				72 * mapSize + 24);
-		sr.end();
+		batch.begin();
+		table.draw(batch, (640 - 12 * ((mapSize * 3) + 1)) * Constants.scale,
+				12 * (29 - (mapSize * 3)) * Constants.scale, (24 * ((mapSize * 3) + 1)) * Constants.scale,
+				(24 * ((mapSize * 3) + 1)) * Constants.scale);
+		batch.end();
 
 		for (int i = 0; i < mapSize; i++) {
 			for (int k = 0; k < mapSize; k++) {
@@ -204,6 +203,7 @@ public class Singleplayer extends State {
 		spointy = y;
 
 		player2.addScore(maxitmap[x][y].getNumber());
+		p2Score.text = player2.getName() + ": " + player2.getScore();
 		turn = true;
 	}
 

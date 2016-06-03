@@ -2,6 +2,7 @@ package com.codeaia.maxit.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.codeaia.maxit.controller.Game;
 import com.codeaia.maxit.ui.Button;
 
@@ -16,48 +17,40 @@ public class Menu extends State {
 	@Override
 	public void create() {
 		super.create();
-		play = new Button("Play", 32, 225);
-		help = new Button("How To Play", 32, 180);
-		options = new Button("Options", 32, 135);
-		credits = new Button("Credits", 32, 90);
-		exit = new Button("Exit", 32, 45);
+		play = new Button("Play", 32, 225, Keys.P);
+		help = new Button("How To Play", 32, 180, Keys.H);
+		options = new Button("Options", 32, 135, Keys.O);
+		credits = new Button("Credits", 32, 90, Keys.C);
+		exit = new Button("Exit", 32, 45, Keys.E);
 	}
 
 	@Override
 	public void update(float mX, float mY, float delta) {
 		super.update(mX, mY, delta);
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+		if (exit.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)
+				|| Gdx.input.isKeyJustPressed(exit.getKey())) {
 			Gdx.app.exit();
 		}
 
-		if (play.isClicked(mX, mY)) {
+		if (play.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(play.getKey())) {
 			Game.state = 2;
 			Game.singleplayer.create();
-			play.playSound();
 		}
 
-		if (help.isClicked(mX, mY)) {
+		if (help.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(help.getKey())) {
 			Game.state = 3;
 			Game.help.create();
-			help.playSound();
 		}
 
-		if (options.isClicked(mX, mY)) {
+		if (options.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(options.getKey())) {
 			Game.state = 4;
 			Game.options.create();
-			options.playSound();
 		}
 
-		if (credits.isClicked(mX, mY)) {
+		if (credits.isClicked(mX, mY) || Gdx.input.isKeyJustPressed(credits.getKey())) {
 			Game.state = 5;
 			Game.credits.create();
-			credits.playSound();
-		}
-
-		if (exit.isClicked(mX, mY)) {
-			exit.playSound();
-			Gdx.app.exit();
 		}
 
 	}
