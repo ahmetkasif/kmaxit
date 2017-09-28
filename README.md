@@ -5,7 +5,7 @@ LibGDX kütüphanesi yardımıyla yapılmış Maxit oyunu, eğer geliştirilme s
 Distributions klasöründen istediğiniz versiyona tıklayıp, ardından raw (çiğ) formatta göster demenizi takiben dosya inmeye başlayacaktır. İndirme konusunda sıkıntı yaşayanlar için indirme linkini de verelim :) 
 
 
-https://github.com/codeaia/KittenMaxit/raw/master/distributions/kmaxit%2B%20v1.3.jar
+https://github.com/ahmetkasif/KittenMaxit/blob/master/distributions/kmaxit+%20v1.6.1.jar?raw=true
 
 If you want to contribute, project is ready to be imported to eclipse.
 
