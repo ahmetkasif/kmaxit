@@ -27,7 +27,7 @@ public class State {
 		bg[0] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/layout.png")));
 		bg[1] = new Sprite(new Texture(Gdx.files.internal("gfx/loadingscreens/layout-dif.png")));
 
-		fps = new Button("Fps : " + 60, 32, 678);
+		fps = new Button("Fps: " + 60, 32, 678);
 
 		Timer.schedule(new Timer.Task() {
 			@Override
