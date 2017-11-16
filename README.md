@@ -1,13 +1,17 @@
 # KittenMaxit - now using LibGDX
 
-LibGDX kütüphanesi yardımıyla yapılmış Maxit oyunu, eğer geliştirilme sürecinde destek olmak istiyorsanız, proje eclipse'e gömülmeye hazır durumdadır. Eğer eclipse'inize gömme konusunda yardıma ihtiyaç duyuyorsanız, LibGDX'in konu hakkındaki şu yazısını okuyun : https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#packaging-for-the-desktop.
+LibGDX kütüphanesi yardımıyla yapılmış Maxit oyunu. Eğer geliştirilme sürecinde destek olmak istiyorsanız, proje eclipse'e gömülmeye hazır durumdadır. Eğer eclipse'inize gömme konusunda yardıma ihtiyaç duyuyorsanız, LibGDX'in konu hakkındaki şu yazısını okuyun : https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#packaging-for-the-desktop.
 
-Distributions klasöründen istediğiniz versiyona tıklayıp, ardından raw (çiğ) formatta göster demenizi takiben dosya inmeye başlayacaktır. İndirme konusunda sıkıntı yaşayanlar için indirme linkini de verelim :) 
-
+Distributions klasöründen istediğiniz versiyona tıklayıp, ardından raw (çiğ) formatta göster demenizi takiben dosya inmeye başlayacaktır. İndirme konusunda sıkıntı yaşayanlar için indirme linki :
 
 https://github.com/ahmetkasif/KittenMaxit/blob/master/distributions/kmaxit+%20v1.6.1.jar?raw=true
 
 If you want to contribute, project is ready to be imported to eclipse.
+
+Conributors
+
+[Abdullah Öğük](https://github.com/abdullahoguk)
+
 
 **Problem**     
  Writing a program to play MAXIT. The board is represented as an N-by-N grid of numbers randomly placed at the start of the game. One position is designated as the initial current 
