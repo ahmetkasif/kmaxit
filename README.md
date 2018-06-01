@@ -1,12 +1,12 @@
 # KittenMaxit - now using LibGDX
 
-LibGDX kütüphanesi yardımıyla yapılmış Maxit oyunu. Eğer geliştirilme sürecinde destek olmak istiyorsanız, proje eclipse'e gömülmeye hazır durumdadır. Eğer eclipse'inize gömme konusunda yardıma ihtiyaç duyuyorsanız, LibGDX'in konu hakkındaki şu yazısını okuyun : https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#packaging-for-the-desktop.
+LibGDX kütüphanesi yardımıyla geliştirilen Maxit oyunu. Kaynak kodunu yerel makinanızda derlemek isterseniz, LibGDX'in konu hakkındaki şu yazısını okuyun : https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#packaging-for-the-desktop.
 
-Distributions klasöründen istediğiniz versiyona tıklayıp, ardından raw (çiğ) formatta göster demenizi takiben dosya inmeye başlayacaktır. İndirme konusunda sıkıntı yaşayanlar için indirme linki :
+Distributions klasöründen istediğiniz versiyona tıklayıp, ardından raw formatta göster demenizi takiben dosya inmeye başlayacaktır. Uygulamayı çalıştırabilmek için, 32bit Java sahibi olmanız gerekmektedir. İndirme konusunda sıkıntı yaşayanlar için indirme linki :
 
 https://github.com/ahmetkasif/KittenMaxit/blob/master/distributions/kmaxit+%20v1.6.1.jar?raw=true
 
-If you want to contribute, project is ready to be imported to eclipse.
+If you want to contribute, project is ready to be imported to eclipse. You have to have 32bit Java installed in order to use this application, 64 bit Java is not supperted.
 
 Conributors
 
