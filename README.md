@@ -8,7 +8,7 @@ https://github.com/ahmetkasif/KittenMaxit/blob/master/distributions/kmaxit+%20v1
 
 If you want to contribute, project is ready to be imported to eclipse. You have to have 32bit Java installed in order to use this application, 64 bit Java is not supperted.
 
-Conributors
+Contributors
 
 [Abdullah Öğük](https://github.com/abdullahoguk)
 
@@ -45,9 +45,9 @@ for all k values starting from the last chosen point to 5 on y axis,
 		assign current number
 ```
 
-#Screenshots
-![Maxit1](http://i.imgur.com/3QvTDrN.png)
-![Maxit2](http://i.imgur.com/G1rezQr.png)
+# Screenshots
+![Maxit1](https://i.imgur.com/3QvTDrN.png)
+![Maxit2](https://i.imgur.com/G1rezQr.png)
 
 
 
